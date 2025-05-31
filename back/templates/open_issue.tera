@@ -1,10 +1,11 @@
-# Issue💰 A new grant has been placed on this issue via **vGrant**!
+# 💰 A new [vGrant](https://vgrant.xyz) has been placed on this issue!
 
-- **Grant Creator**: [`{{ grant_creator_address }}`](https://worldchain.xyz/address/{{ grant_creator_address }})
-- **Grant Amount**: {{ grant_amount }} USDC
-- **Grant Contract**: [`{{ contract_address }}`](https://worldchain.xyz/address/{{ contract_address }})
+### Grants Details 
+- **Funder**: [`{{ grant_creator_address }}`](https://worldchain.xyz/address/{{ grant_creator_address }})
+- **Amount**: {{ grant_amount }} USDC
+- **Contract**: [`{{ contract_address }}`](https://worldchain.xyz/address/{{ contract_address }})
 
-🔒 The funds are securely held by the vGrant smart contract until this issue is resolved.
+🔒 The funds are securely held by the smart contract until this issue is resolved.
 
 ➡️ [View transaction](https://worldchain.xyz/address/{{ contract_address }}) or [learn more about vGrant](https://vgrant.xyz)
 
