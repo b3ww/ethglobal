@@ -214,3 +214,4 @@ const bounties = await WorldSDK.getLiveBounties();
 - Manage multiple concensus - **Fund on merge** / **Fund on merge and Approval** (Bounty / Free-lance concensus)
 - Add other Git service (Gitlab, ...)
 - Add developper portfolio
+- Priority ranking in Project
