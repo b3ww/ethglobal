@@ -1,41 +1,105 @@
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
 
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from './ui/button';
+import { useWalletConnection } from '@/lib/hooks/useWalletConnection';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 
 export const Navbar = () => {
-  return (
-    <nav className="bg-secondary">
-      <div className="px-8 flex justify-between items-center h-16">
-        <div className="text-xl font-bold">VGrant</div>
+  const { isConnected, connectWallet, disconnectWallet, formattedAddress } =
+    useWalletConnection();
+  const location = useLocation();
 
-        <div className="hidden md:flex space-x-24">
-          <Link
-            to="/register-account"
-            className="hover:text-accent transition-colors"
-          >
-            Register account
-          </Link>
-          <Link
-            to="/create-grant"
-            className="hover:text-accent transition-colors"
-          >
-            Create grant
-          </Link>
-          <Link
-            to="/validate-grant"
-            className="hover:text-accent transition-colors"
-          >
-            Validate grant
-          </Link>
-        </div>
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  return (
+    <nav className="bg-secondary rounded-4xl shadow-lg border border-border/40">
+      <div className="px-8 py-3 flex justify-between items-center h-16">
+        <Link
+          to="/"
+          className={`text-xl font-bold hover:text-accent transition-colors ${isActive('/') ? 'text-accent' : ''}`}
+        >
+          VGrant
+        </Link>
+
+        <NavigationMenu className="hidden md:flex">
+          <NavigationMenuList className="space-x-2">
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  isActive('/register-account') &&
+                    'text-accent font-semibold bg-accent/10',
+                  'border-border/60 border',
+                )}
+              >
+                <Link to="/register-account">Register account</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  isActive('/create-grant') &&
+                    'text-accent font-semibold bg-accent/10',
+                  'border-border/60 border',
+                )}
+              >
+                <Link to="/create-grant">Create grant</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  isActive('/validate-grant') &&
+                    'text-accent font-semibold bg-accent/10',
+                  'border-border/60 border',
+                )}
+              >
+                <Link to="/validate-grant">Validate grant</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
         <div className="flex items-center space-x-10">
           <ModeToggle />
 
-          <Button className="flex items-center space-x-2 group-hover:text-accent transition-colors">
-            Connect Wallet
-          </Button>
+          {isConnected ? (
+            <div className="flex items-center space-x-3">
+              <span className="text-sm font-medium px-3 py-1.5 bg-muted rounded-full">
+                {formattedAddress}
+              </span>
+              <Button
+                variant="outline"
+                onClick={disconnectWallet}
+                className="transition-colors border-border/70 dark:border-white/70 dark:bg-white/10 dark:text-white dark:hover:bg-accent/40 dark:hover:text-white"
+              >
+                Disconnect
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={connectWallet}
+              variant="outline"
+              className="transition-colors border-border/70 dark:border-white/70 dark:bg-white/10 dark:text-white dark:hover:bg-accent/40 dark:hover:text-white"
+            >
+              Connect Wallet
+            </Button>
+          )}
         </div>
       </div>
     </nav>
