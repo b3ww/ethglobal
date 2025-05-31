@@ -20,99 +20,56 @@ graph LR
     E --> F
 ```
 
+1. **Create Bounty**  
+   - Initialize with GitHub issue ID
+   - Set expiration timeframe (days/weeks)
+   ```solidity
+   struct Bounty {
+       address payable funder;
+       uint96 amount;          // Packed storage
+       uint32 deadline;        // Until 2106
+       address winner;
+       bool isClaimed;
+   }
+   ```
 
-1. **Create Bounty**
-- Initialize bounty with unique issue ID
-- Set expiration timeframe
-```solidity
-struct Bounty {
-        address payable funder;
-        uint96 amount;
-        uint32 deadline;
-        address winner;
-        bool isClaimed;
-}
-```
+2. **Deposit Funds**  
+   - ETH/ERC-20 held in non-custodial escrow
+   - Fully refundable if unresolved
 
-2. **Deposit Funds**
-- Lock cryptocurrency in smart contract- 
-- Funds held in escrow
-
-3. **Wait for Resolution**
-- Two possible outcomes:
-```mermaid
-graph LR
-    W[Wait] -->|Successful Fix| S[🟢 Auto-Payout]
-    W -->|Timeout| T[🔴 Reclaim]
-```
-4. **Resolution Paths**  
-   - 🟢 **Auto-Payout to Winner** (Green path):
-     - Triggered by first valid merge
-     - Funds automatically transferred
-     - No funder action required
-   - 🔴 **Reclaim Funds** (Red path):
-     - Manual `reclaimBounty()` call
-     - Available after deadline
-     - Full refund
-
-5. **Bounty Closed**  
-   - Contract state finalized
-   - Event emitted for record keeping
-
-
-```mermaid
-graph LR
-    A[Funder] --> B[Create Bounty]
-    B --> C[Deposit Funds]
-    C --> D{Wait for Resolution}
-    
-    D -->|First Valid Merge| E[Auto-Payout to Winner]
-    D -->|Deadline Expired| F[Reclaim Funds]
-    
-    E --> G[Bounty Closed]
-    F --> G[Bounty Closed]
-```
+3. **Automatic Resolution**  
+   - 🟢 **Success**: Funds auto-sent to first merged PR
+   - 🔴 **Timeout**: Manual reclaim after deadline
 
 ### 👨‍💻 Developer Journey
-
+The first valid merge can claim the Bounty 💸 
 ```mermaid
-sequenceDiagram
-    participant Dev as Developer
-    participant GH as GitHub
-    participant Oracle
-    participant Contract
-    
-    Dev->>GH: 1. Submit PR for issue
-    GH->>Oracle: 2. Detect first merge
-    Oracle->>Contract: 3. resolveBounty(winner)
-    Contract->>Dev: 4. Instant payout!
+flowchart LR
+    A[Developer] --> B[Submit PR for Issue]
+    B --> C{GitHub}
+    C -->|First Merge Detected| D[Oracle Service]
+    D -->|resolveBounty winner| E[Smart Contract]
+    E -->|Instant Payout| F[Developer Wallet]
 ```
 
-**Winner Determination**  
+
+## ✨ Core Innovation
+
+### 🛡️ PR Theft Protection
 ```mermaid
 graph LR
-    PR[Pull Request] -->|Merged| Detect{First Valid Merge?}
-    Detect -->|Yes| Win[💸 Claim Bounty]
-    Detect -->|No| Continue[Keep Contributing]
+    A[PR Created] --> B{Oracle Verification}
+    B -->|Valid Email| C[✅ Secure Payout]
+    B -->|Invalid| D[❌ Rejected]
 ```
 
+- **ZK-Proof Verification** (VLayer integration)
+- Cryptographic GitHub signature validation
+- Immutable merge timestamp proof
 
-### Timeline Visualization:
-```mermaid
-gantt
-    title Bounty Lifecycle
-    dateFormat  X
-    axisFormat %s
-    section Funding
-    Create & Deposit : 0, 1
-    section Active
-    Open Bounty : 1, 15
-    section Resolution
-    Success : 15, 1 : milestone
-    Timeout : 20, 1 : milestone
-```
+---
 
-### Funder Benefits:
+### 💸 Funder Benefits:
 1. **Minimal Management**  
    - No developer approvals
    - No PR tracking
@@ -132,17 +89,42 @@ This simplified funder journey maintains security while minimizing management ov
 
 ---
 
-
-
-## 📽️ Partners
+## 🏆 Prize Integrations
+### 📽️ Partners
 <img src="images/vlayer.png" alt="world logo" width="100"  align="right"/>
 
 **VLayer** provides verifiable data infrastructure that bridges Web2 and Web3, enabling developers to integrate and verify real-world data — **like web and email proofs** — into Ethereum smart contracts using zero-knowledge proofs and familiar tools like Solidity.
+
+**Email Proof Integration:**
+```solidity
+function verifyResolution(
+    bytes32 issueId,
+    EmailProof memory proof
+) external {
+    require(VLayer.verifyEmail(proof), "Invalid proof");
+    _processPayout(issueId);
+}
+```
+
+- **ZK-verified contributor identities**
+- Anti-sybil protection for submissions
+- Secure multi-platform notifications
+
+---
 
 <img src="images/world.png" alt="world logo" width="100"  align="right"/>
 
 **World** offers developers a chance to build mini-apps with instant access to 23 million World App users, featuring integrated wallets and free transactions on World Chain, while providing bounties for projects using their Minikit SDK.
 
+**In-App Bounty Discovery:**
+```javascript
+WorldSDK.connectWallet();
+const bounties = await WorldSDK.getLiveBounties();
+```
+
+- Instant access to 23M World App users
+- Gasless transactions via World Chain
+- Embedded wallet integration
 
 
 ## 🏅 Prize Submissions
@@ -160,3 +142,4 @@ This simplified funder journey maintains security while minimizing management ov
 - IPFS
 - Manage multiple concensus - Fund on merge / Fund on merge and approval (Bounty / Free-lance)
 - Add bounty on existing issues
+- Add other Git service (Gitlab, ...)
