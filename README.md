@@ -213,3 +213,4 @@ const bounties = await WorldSDK.getLiveBounties();
 - Implement decentralized database for front-end caching (using **IPFS**)
 - Manage multiple concensus - **Fund on merge** / **Fund on merge and Approval** (Bounty / Free-lance concensus)
 - Add other Git service (Gitlab, ...)
+- Add developper portfolio
