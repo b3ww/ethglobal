@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 
 export const Navbar = () => {
   return (
-    <nav className="bg-secondary">
+    <nav className="bg-secondary rounded-4xl shadow-lg">
       <div className="px-8 flex justify-between items-center h-16">
         <div className="text-xl font-bold">VGrant</div>
 
