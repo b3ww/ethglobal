@@ -4,4 +4,4 @@ use bot::Bot;
 pub mod error;
 use error::*;
 
-mod tempales;
+mod templates;
