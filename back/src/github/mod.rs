@@ -3,3 +3,5 @@ use bot::Bot;
 
 pub mod error;
 use error::*;
+
+mod template;
