@@ -40,21 +40,7 @@ graph LR
 **Maintainer** 🤵‍♂️:
 1. Reviews **Bob**'s Pull-Request against standard
 2. Merges on approval → **auto-releases payment**
-
-
-## ✅ When **bounties** beat classic model: 
-- **Funder**: Pays only for results (no hourly fees/management)
-- **Developper**: Earns crypto-currencies + reputation
-- **Blender**: Gets vetted code faster
-- **0% platform fees** (vs. 20% on Upwork/Fiverr)
-- **Decentralized**: No geo-restrictions/censorship
-
-## ❌ When it does not:
-- **Complex projects**: Poor for multi-phase work needing iteration
-- **Relationship-dependent**: Bad when ongoing collaboration required 
-- **Sensitive work**: Unsuitable for proprietary/NDA-protected code
-- **High-support features**: Suboptimal if post-launch maintenance needed
-- **Niche skills**: Less effective than targeted freelancer recruitment
+3. Receives review fee (5-15% of bounty) → funds project treasury
 
 ## 🚀 How VGrant Works
 
@@ -73,7 +59,7 @@ graph LR
     G --> H
 ```
 
-1. **Create Bounty**  
+1. **Create Bounty**  Remunerate Open Source Projects and Contributors
 ```solidity
 struct Bounty {
     address payable funder;
@@ -84,7 +70,7 @@ struct Bounty {
 }
 ```
 
-2. **Deposit Funds**  
+2. **Funds Locking**  
 - **USDC** held in audited escrow contract
 - Immutable until resolution conditions met
 
@@ -97,25 +83,32 @@ struct Bounty {
 The first valid merge can claim the Bounty 💸
 ```mermaid
 flowchart LR
-    A[Developper] --> B[Submit PR for Issue]
-    B --> C{Git}
-    C -->|First Merge Detected| D[Oracle Service]
-    D -->|resolveBounty winner| E[Smart Contract]
-    E -->|Instant Payout| F[Developer Wallet]
+    A[👨‍💻 1 - Find Bounty] --> B[2 - Submit PR with Solution]
+    B --> C[3 - Maintainer Reviews]
+    C --> D{4 - Approved?}
+    D -->|Yes| E[5 - Merge PR]
+    D -->|No| B
+    E --> F[6 - Merge Detected]
+    F --> G[7 - Oracle Verifies Claim]
+    G --> H[📜 8 - resolveBounty]
+    H --> I{9 - Valid?}
+    I -->|Yes| J[💸 10a - Instant USDC Payout]
+    I -->|No| K[🛑 10b - Claim Rejected]
+    J --> L[✅ Bounty Claimed]
+    K --> M[⚠️ Alert Maintainers]
 ```
-
 
 ## ✨ Core Innovation
 
 ### 🛡️ PR Theft Protection
 ```mermaid
 graph LR
-    A[Pull Request Created] --> B{VLayer Verification}
+    A[PR Created] --> B{**VLayer** Verification}
     B -->|Valid Email 📧| C[✅ Secure Payout]
     B -->|Invalid| D[❌ Rejected]
 ```
 
-- **ZK-Proof Verification** (VLayer integration)
+- [**Zero-Knowledge-Proof Verification**](https://en.wikipedia.org/wiki/Zero-knowledge_proof) (VLayer integration)
 - Cryptographic GitHub signature validation
 - Immutable merge timestamp proof
 
@@ -127,6 +120,44 @@ graph LR
 | **Winner Selection**| Algorithmic - no bias            | Pure meritocracy win         |
 | **Fund Handling**   | Reclaim anytime post-deadline    | Instant payout on merge
 | **Technical Focus** | Define problem → fund → wait      | Find issue → code → get paid      |
+
+
+### ✅ When **Bounties** beat classic models: 
+- **Funder**: Pays only for results (no hourly fees/management)
+- **Developper**: Earns crypto-currencies + reputation
+- **Blender**: Gets vetted code faster
+
+### ❌ When Traditional Wins:
+- **Complex projects**: Poor for multi-phase work needing iteration
+- **Relationship-dependent**: Bad when ongoing collaboration required 
+- **Sensitive work**: Unsuitable for proprietary/NDA-protected code
+- **High-support features**: Suboptimal if post-launch maintenance needed
+- **Niche skills**: Less effective than targeted freelancer recruitment
+
+### When to use Bounties ?
+#### ⭐ For Funder
+- Scope is **clear** & **achievable** (1-3 week tasks)
+- Seeking specialized skills for **non-core features**
+- Budget certainty outweighs timeline flexibility
+- Funds released only for verified working solutions
+
+#### 👨‍💻 For Developper
+- Be rewarded for your Open Source Work in your **Free Time**
+- Build a **Reputation** with contributions (Git/NFTs)
+- Compete on skill, **not location**
+- Access global opportunities with no interviews
+
+#### 🤵‍♂️ For Maintainer 
+- Project benefits from new vetted contributions
+- Quality control is enforced (verified before merge)
+- Earn sustainable funding (percentage of bounties)
+- Grow ecosystem through new contributors
+
+### 🌐 Why Decentralizing it ?
+- **0% platform fees** (vs. 20% on Upwork/Fiverr)
+- **Decentralized**: No geo-restrictions/censorship
+- Salary task dependant
+- **Transparency**: Verifiable on-chain contract
 
 ---
 
