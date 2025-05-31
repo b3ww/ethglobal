@@ -21,10 +21,11 @@ anyhow = "1"
 octocrab = "*"
 regex = "*"
 futures = "*"
-rand = "0.8.5" 
+rand = "0.8.5"
 tera = "*"
-
-
+alloy = "1"
+url = "*"
+sqlx = { version = "0.8.6", features = ["postgres"] }
 # [toolchain]
 # channel = "stable"
 # components = ["rust-src", "rustfmt", "clippy"]
