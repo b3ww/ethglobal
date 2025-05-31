@@ -22,7 +22,6 @@ pub async fn github_poller(
             let bot = bot;
             async move {
                 let fetched = bot.fetch_issue(&issue.owner, &issue.repo, issue.number).await?;
-                    println!("{fetched:?}");
                     Ok::<_, anyhow::Error>((issue, fetched.state))
                 }
             })
@@ -38,7 +37,7 @@ pub async fn github_poller(
                     if state == IssueState::Open {
                         remaining_issues.push(issue);
                     } else {
-                        // Ici tu peux faire appel RPC sur issue fermée
+                        // close_grant()
                     }
                 }
                 Err(e) => {
@@ -53,3 +52,4 @@ pub async fn github_poller(
         sleep(Duration::from_secs(15)).await;
     }
 }
+

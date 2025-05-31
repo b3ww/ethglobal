@@ -1,4 +1,3 @@
-use octocrab::models::IssueState;
 use tokio::sync::mpsc;
 use tokio::time::{sleep, Duration};
 use anyhow::Result;

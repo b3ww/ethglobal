@@ -1,8 +1,5 @@
-pub mod close;
-
-pub mod open;
-
-pub mod pull_request;
+mod open_issue;
+pub use open_issue::*;
 
 #[cfg(test)]
 mod tests {
