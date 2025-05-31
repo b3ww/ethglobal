@@ -2,7 +2,7 @@ use alloy::sol_types::SolEvent;
 use std::str::FromStr;
 use tokio::sync::mpsc;
 use tokio::time::{Duration, sleep};
-use tracing::error;
+use tracing::{error, info};
 
 use alloy::eips::BlockNumberOrTag;
 use alloy::primitives::Address;
@@ -47,7 +47,14 @@ fn parse_event(log: &Log) -> Option<Event> {
     match log.topic0() {
         Some(&BountyApproved::SIGNATURE_HASH) => {
             match BountyApproved::decode_log_data(log.data()) {
-                Ok(event) => Some(Event::BountyApproved(event.issue)),
+                Ok(event) => {
+                    info!(
+                        "BountyApproved event found: issue = {}, block = {:?}",
+                        event.issue,
+                        log.block_number
+                    );
+                    Some(Event::BountyApproved(event.issue))
+                }
                 Err(e) => {
                     error!("Failed to decode BountyApproved: {:?}", e);
                     None
@@ -56,7 +63,15 @@ fn parse_event(log: &Log) -> Option<Event> {
         }
         Some(&BountyClaimed::SIGNATURE_HASH) => {
             match BountyClaimed::decode_log_data(log.data()) {
-                Ok(event) => Some(Event::BountyClaimed(event.issue, event.claimer)),
+                Ok(event) => {
+                    info!(
+                        "BountyClaimed event found: issue = {}, claimer = {:?}, block = {:?}",
+                        event.issue,
+                        event.claimer,
+                        log.block_number
+                    );
+                    Some(Event::BountyClaimed(event.issue, event.claimer))
+                }
                 Err(e) => {
                     error!("Failed to decode BountyClaimed: {:?}", e);
                     None
@@ -66,6 +81,7 @@ fn parse_event(log: &Log) -> Option<Event> {
         _ => None,
     }
 }
+
 
 pub async fn solidity_poller(
     sender: mpsc::Sender<IssueRef>,
