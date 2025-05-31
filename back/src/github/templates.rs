@@ -72,16 +72,16 @@ pub fn open_issue(amount: U256, deadline: U256) -> String {
 
 
 pub fn increase_deadline() -> String {
-    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
 
-    let mut context = Context::new();
-    context.insert("gas_fee", "0.1");
-    context.insert("tx_hash", "0x12345...XYZ");
-    context.insert("deadline", "15 january");
-    context.insert("new_deadline", "20 january");
-    context.insert("contract_address", "0xCONTRACT123...XYZ");
+    let context = HashMap::from([
+        ("gas_fee", "0.1"),
+        ("tx_hash", "0x12345...XYZ"),
+        ("deadline", "15 january"),
+        ("new_deadline", "20 january"),
+        ("contract_address", "0xCONTRACT123...XYZ"),
+    ]);
 
-    tera.render("increase_deadline.tera", &context).unwrap()
+    generate_template(context,"increase_deadline.tera")
 }
 
 
