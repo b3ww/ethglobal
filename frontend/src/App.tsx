@@ -5,6 +5,7 @@ import { Layout } from '@/components/Layout';
 import { Home } from './pages/Home';
 import { TemplatePage } from './pages/TemplatePage';
 import { GrantPage } from '@/pages/PlaceGrant.tsx';
+import { ValidateGrantPage } from '@/pages/ValidateGrant.tsx';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/register-account" element={<TemplatePage />} />
           <Route path="/create-grant" element={<GrantPage />} />
-          <Route path="/validate-grant" element={<TemplatePage />} />
+          <Route path="/validate-grant" element={<ValidateGrantPage />} />
         </Route>
       </Routes>
     </>
