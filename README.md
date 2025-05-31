@@ -109,7 +109,7 @@ graph LR
 
 ---
 
-### 🔑 Key Benefits
+## 🔑 Key Benefits
 | **Feature**         | **💸 Funder**                  | **👨‍💻 Developer**               |
 |---------------------|-----------------------------------|-----------------------------------|
 | **Winner Selection**| Algorithmic - no bias            | Pure meritocracy win         |
@@ -129,7 +129,7 @@ graph LR
 - **High-support features**: Suboptimal if post-launch maintenance needed
 - **Niche skills**: Less effective than targeted freelancer recruitment
 
-### When to use Bounties ?
+## When to use Bounties ?
 #### ⭐ For Funder
 - Scope is **clear** & **achievable** (1-3 week tasks)
 - Seeking specialized skills for **non-core features**
@@ -148,7 +148,7 @@ graph LR
 - Earn sustainable funding (percentage of bounties)
 - Grow ecosystem through new contributors
 
-### 🌐 Why Decentralizing it ?
+## 🌐 Why Decentralizing it ?
 - **0% platform fees** (vs. 20% on Upwork/Fiverr)
 - **Decentralized**: No geo-restrictions/censorship
 - **Transparency**: Verifiable on-chain contract
