@@ -1,4 +1,5 @@
-![ETHGlobal PRAGUE](images/ETHGlobal.png)
+<img src="images/ETHGlobal.png" alt="ETHGlobal PRAGUE" width="600"/>
+
 
 # 🪙 VGrant - ETHGlobal
 
@@ -11,19 +12,19 @@ graph LR
     C -->|No| E[No Reward]
 ```
 
-
-
-
 ## Prizes 🥇
 ### Partners
-#### Vlayer ![vlayer logo](images/vlayer.png)
+<img src="images/vlayer.png" alt="world logo" width="100"/>
+
 **VLayer** provides verifiable data infrastructure that bridges Web2 and Web3, enabling developers to integrate and verify real-world data—like web and email proofs—into Ethereum smart contracts using zero-knowledge proofs and familiar tools like Solidity.
 
-#### World ![world logo](images/world.png)
+#### World 
+<img src="images/world.png" alt="world logo" width="100"/>
+
 **World** offers developers a chance to build mini-apps with instant access to 23 million World App users, featuring integrated wallets and free transactions on World Chain, while providing bounties for projects using their Minikit SDK.
 
 
-### Our prizes
+### Registration
 We register for the following prizes :
 - Vlayer
     🦸 Most inspiring use of vlayer superpowers ⸺ $4,000\
