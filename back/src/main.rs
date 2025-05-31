@@ -1,43 +1,25 @@
-mod api;
 mod github;
-
 use github::bot::Bot;
 
-use tower_http::cors::{Any, CorsLayer};
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+mod pollers;
+use dotenvy::dotenv;
+
+use tokio::sync::mpsc;
+use anyhow::Result;
+
 
 #[tokio::main]
-async fn main() {
-    tracing_subscriber::registry()
-        .with(tracing_subscriber::EnvFilter::new(
-            std::env::var("RUST_LOG").unwrap_or_else(|_| "info".into()),
-        ))
-        .with(tracing_subscriber::fmt::layer())
-        .init();
+async fn main() -> Result<()> {
+    let (tx, rx) = mpsc::channel(100); // buffer size de 100 messages
+    let _ = dotenv();
+    let bot = Bot::try_new(&std::env::var("GITHUB_BOT_TOKEN").unwrap()).unwrap(); // ou passe tes configs ici
+    let concurrency = 10;
 
-    let pool = api::repository::establish_connection();
+    // Lancer les deux pollers en parallèle
+    tokio::try_join!(
+        pollers::solidity_poller(tx, concurrency),
+        pollers::github_poller(&bot, rx, concurrency)
+    )?;
 
-    let cors = CorsLayer::new()
-        .allow_methods(Any)
-        .allow_headers(Any)
-        .allow_origin(Any);
-
-    let app = api::create_routes(pool).layer(cors);
-
-    let server_task = tokio::spawn(async move {
-        let listener = tokio::net::TcpListener::bind("0.0.0.0:3000")
-            .await
-            .expect("Erreur d'ouverture du port 3000");
-
-        tracing::info!(
-            "🚀 Serveur en écoute sur {}",
-            listener.local_addr().unwrap()
-        );
-
-        axum::serve(listener, app)
-            .await
-            .expect("Erreur lors du démarrage du serveur");
-    });
-
-    tokio::join!(server_task);
+    Ok(())
 }

@@ -1,6 +1,5 @@
+use crate::github::error::{BotError, Result};
 use octocrab::{Octocrab, models::issues::Issue};
-use std::ops::Deref;
-use crate::github::error::{Result, BotError};
 
 pub struct Bot {
     client: Octocrab,
@@ -14,26 +13,12 @@ impl Bot {
         Ok(Self { client })
     }
 
-    pub async fn create_issue(
-        &self,
-        repo_owner: &str,
-        repo_name: &str,
-        title: &str,
-        body: &str,
-    ) -> Result<Issue> {
-        Ok(self
-            .issues(repo_owner, repo_name)
-            .create(title)
-            .body(body)
-            .send()
-            .await?)
+    pub async fn fetch_issue(&self, owner: &str, repo: &str, number: u64) -> Result<Issue> {
+        Ok(self.client.issues(owner, repo).get(number).await?)
     }
-}
 
-impl Deref for Bot {
-    type Target = Octocrab;
-
-    fn deref(&self) -> &Self::Target {
-        &self.client
+    pub async fn add_issue_comment(&self,  owner: &str, repo: &str, number: u64, body: &str) -> Result<()> {
+        let _ = self.client.issues(owner, repo).create_comment(number, body).await?;
+        Ok(())
     }
 }

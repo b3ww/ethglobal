@@ -1,27 +1,27 @@
 [package]
-name = "ethglobal"
+name = "vGrant-data-poller"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+default = ["api"]
+api = []
+polling = []
+
 [dependencies]
-axum = "0.8.4"
 tokio = { version = "1.45.1", features = ["full"] }
-diesel = { version = "2.1.0", features = ["postgres", "r2d2", "chrono"] }
 dotenvy = "0.15.7"
 serde = { version = "1.0.197", features = ["derive"] }
 serde_json = "1.0.114"
 chrono = { version = "0.4.34", features = ["serde"] }
-tower-http = { version = "0.6.4", features = ["cors"] }
-r2d2 = "0.8.10"
 thiserror = "2.0.12"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
-oauth2 = "5.0.0"
-reqwest = { version = "0.12.18", features = ["json"] }
-url = "2.5.0"
-axum-extra = { version = "0.10.1", features = ["cookie"] }
 anyhow = "1"
 octocrab = "*"
+regex = "*"
+futures = "*"
+rand = "0.8.5" 
 
 
 # [toolchain]
