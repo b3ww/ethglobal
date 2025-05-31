@@ -10,7 +10,7 @@ pub struct User {
     pub id: i32,
     pub username: String,
     pub email: String,
-    pub github_id: Option<String>,
+    pub github_id: Option<i64>,
     pub github_username: Option<String>,
     pub avatar_url: Option<String>,
     pub access_token: Option<String>,
@@ -23,7 +23,7 @@ pub struct User {
 pub struct NewUser {
     pub username: String,
     pub email: String,
-    pub github_id: Option<String>,
+    pub github_id: Option<i64>,
     pub github_username: Option<String>,
     pub avatar_url: Option<String>,
     pub access_token: Option<String>,
@@ -34,7 +34,7 @@ pub struct NewUser {
 pub struct UpdateUser {
     pub username: Option<String>,
     pub email: Option<String>,
-    pub github_id: Option<String>,
+    pub github_id: Option<i64>,
     pub github_username: Option<String>,
     pub avatar_url: Option<String>,
     pub access_token: Option<String>,

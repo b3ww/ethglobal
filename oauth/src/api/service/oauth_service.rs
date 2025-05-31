@@ -146,7 +146,7 @@ impl OAuthService {
         use crate::api::models::schema::users;
 
         let existing_user = users::table
-            .filter(users::github_id.eq(github_user.id.to_string()))
+            .filter(users::github_id.eq(github_user.id))
             .select(User::as_select())
             .first(&mut conn)
             .optional()
@@ -181,7 +181,7 @@ impl OAuthService {
         let new_user = NewUser {
             username,
             email,
-            github_id: Some(github_user.id.to_string()),
+            github_id: Some(github_user.id),
             github_username: Some(github_user.login),
             avatar_url: github_user.avatar_url,
             access_token: Some(access_token),
