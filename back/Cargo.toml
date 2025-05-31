@@ -20,3 +20,10 @@ oauth2 = "5.0.0"
 reqwest = { version = "0.12.18", features = ["json"] }
 url = "2.5.0"
 axum-extra = { version = "0.10.1", features = ["cookie"] }
+anyhow = "1"
+octocrab = "*"
+
+
+# [toolchain]
+# channel = "stable"
+# components = ["rust-src", "rustfmt", "clippy"]
