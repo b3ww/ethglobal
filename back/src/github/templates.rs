@@ -54,14 +54,22 @@ pub fn new_pull_request() -> String {
     generate_template(context,"new_pull_request.tera")
 }
 
-pub fn open_issue() -> String {
+pub fn open_issue(amount: U256, deadline: U256) -> String {
+    let amount = &format_type(amount);
+    let deadline = &u256_to_utc_string(deadline);
+
     let context = HashMap::from([
         ("grant_creator_address", "0xCREATOR123...XYZ"),
-        ("grant_amount", "100.00"),
+        ("grant_amount", amount),
         ("contract_address", "0xCONTRACT123...XYZ"),
         ("gas_fee", "0.1"),
         ("tx_hash", "0x12345...XYZ"),
+        ("deadline", deadline)
     ]);
+
+    generate_template(context,"open_issue.tera")
+}
+
 
 pub fn increase_deadline() -> String {
     let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
