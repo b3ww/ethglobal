@@ -33,6 +33,29 @@ pub fn close_issue() -> String {
     tera.render("close_issue.tera", &context).unwrap()
 }
 
+pub fn new_pull_request() -> String {
+    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
+
+    let mut context = Context::new();
+    context.insert("developer_name", "vitalik");
+    context.insert("developer_address", "0xABC123...DEF");
+    context.insert("gas_fee", "0.1");
+    context.insert("tx_hash", "0x12345...XYZ");
+
+    tera.render("new_pull_request.tera", &context).unwrap()
+}
+
+
+pub fn open_issue() {
+    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
+
+    let mut context = Context::new();
+    context.insert("grant_creator_address", "0xABC123...DEF");
+    context.insert("grant_amount", "100.00");
+    context.insert("contract_address", "0xCONTRACT123...XYZ");
+
+    tera.render("open_issue.tera", &context).unwrap()
+}
 
 mod test {
     use crate::github::Bot;
