@@ -29,9 +29,9 @@ pub fn u256_to_utc_string(timestamp: U256) -> String {
 #[allow(dead_code)]
 pub fn close_issue(
     grant_amount: U256,
-    developer_name: String,
     developer_address: Address,
-    tx_hash: Address,
+    dev_github_id: I256,
+
 ) -> String {
     let contract_address_str = contract_address.to_string();
     let developer_address_str = developer_address.to_string();
@@ -72,7 +72,6 @@ pub fn open_issue(
 pub fn increase_deadline(
     deadline: U256,
     new_deadline: U256,
-    github_id: I256,
 ) -> String {
     let deadline = &u256_to_utc_string(deadline);
     let new_deadline = &u256_to_utc_string(new_deadline);
