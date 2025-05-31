@@ -83,7 +83,7 @@ impl Event {
                         &issue_ref.owner,
                         &issue_ref.repo,
                         issue_ref.number,
-                        &close_issue(price, dev_address, github_id),
+                        &close_issue(*price, *dev_address, *github_id),
                     )
                     .await;
             }
