@@ -5,13 +5,16 @@ import App from './App.tsx';
 import './index.css';
 
 import { ThemeProvider } from '@/components/theme-provider.tsx';
+import { WalletProvider } from '@/providers/WalletProvider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <WalletProvider>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </WalletProvider>
     </BrowserRouter>
   </StrictMode>,
 );
