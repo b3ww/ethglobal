@@ -80,7 +80,7 @@ async fn main() -> Result<()> {
     );
 
     if let Err(e) = tokio::try_join!(
-        pollers::solidity_poller(tx, concurrency, config.contract_address, "", checkpoint, pool),
+        pollers::solidity_poller(tx, &bot, config.contract_address, "https://lingering-proud-ensemble.optimism-sepolia.quiknode.pro/91ef4f95c19c2147f2dbe5e46980101050203f5d/", checkpoint, pool),
         pollers::github_poller(&bot, rx, concurrency),
     ) {
         error!("Fatal error: {:?}", e);

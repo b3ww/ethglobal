@@ -13,9 +13,6 @@ pub enum BotError {
 
     #[error("Erreur I/O : {0}")]
     Io(#[from] io::Error),
-
-    #[error("Erreur personnalisée : {0}")]
-    Custom(String),
 }
 
 pub type Result<T> = std::result::Result<T, BotError>;
