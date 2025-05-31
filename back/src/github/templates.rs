@@ -1,5 +1,8 @@
 use std::collections::HashMap;
+use alloy::primitives::U256;
+use chrono::{DateTime, Duration, TimeZone, Utc};
 use tera::{Context, Tera};
+use tracing_subscriber::fmt::time::SystemTime;
 
 fn generate_template(values: HashMap<&str, &str>, name: &str) -> String {
     let tera = Tera::new("templates/**/*.tera").expect("Erreur lors du chargement des templates");
@@ -11,13 +14,22 @@ fn generate_template(values: HashMap<&str, &str>, name: &str) -> String {
     tera.render(name, &context).unwrap()
 }
 
-// fn m() -> String {
-//     generate_template(HashMap::from([
-//         ("grant_creator_address".to_string(), "0xABC123...DEF".to_string()),
-//         ("grant_amount".to_string(), "100.00".to_string()),
-//         ("contract_address".to_string(), "0xCONTRACT123...XYZ".to_string()),
-//     ]), "open_issue.tera")
-// }
+fn format_type<T>(elem: T) -> String
+where
+    T:std::fmt::Display
+{
+    elem.to_string()
+}
+
+pub fn u256_to_utc_string(timestamp: U256) -> String {
+    let seconds = timestamp.to::<u64>();
+    
+    // Convert to DateTime<Utc>
+    let datetime: DateTime<Utc> = Utc.timestamp_opt(seconds as i64, 0).unwrap();
+    
+    // Format as string (customize format as needed)
+    datetime.format("%Y-%m-%d %H:%M:%S UTC").to_string()
+}
 
 pub fn close_issue() -> String {
     let context = HashMap::from([
@@ -51,11 +63,22 @@ pub fn open_issue() -> String {
         ("tx_hash", "0x12345...XYZ"),
     ]);
 
-    generate_template(context, "open_issue.tera")
+pub fn increase_deadline() -> String {
+    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
+
+    let mut context = Context::new();
+    context.insert("gas_fee", "0.1");
+    context.insert("tx_hash", "0x12345...XYZ");
+    context.insert("deadline", "15 january");
+    context.insert("new_deadline", "20 january");
+    context.insert("contract_address", "0xCONTRACT123...XYZ");
+
+    tera.render("increase_deadline.tera", &context).unwrap()
 }
 
+
 mod test {
-    use crate::github::Bot;
+    use crate::github::{templates::{increase_deadline, open_issue}, Bot};
 
     use super::close_issue;
     use super::open_issue;
