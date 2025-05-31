@@ -151,7 +151,6 @@ graph LR
 ### 🌐 Why Decentralizing it ?
 - **0% platform fees** (vs. 20% on Upwork/Fiverr)
 - **Decentralized**: No geo-restrictions/censorship
-- Salary task dependant
 - **Transparency**: Verifiable on-chain contract
 
 ---
