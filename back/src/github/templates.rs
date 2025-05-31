@@ -4,10 +4,10 @@ use chrono::{DateTime, Duration, TimeZone, Utc};
 use tera::{Context, Tera};
 use tracing_subscriber::fmt::time::SystemTime;
 
-fn generate_template(values: HashMap<String, String>, name: &str) -> String {
+fn generate_template(values: HashMap<&str, &str>, name: &str) -> String {
     let tera = Tera::new("templates/**/*.tera").expect("Erreur lors du chargement des templates");
     let context = values.iter().fold(Context::new(), |mut ctx, (key, value)| {
-        ctx.insert(key, value);
+        ctx.insert(*key, value);
         ctx
     });
 
@@ -32,45 +32,36 @@ pub fn u256_to_utc_string(timestamp: U256) -> String {
 }
 
 pub fn close_issue() -> String {
-    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
-
-    let mut context = Context::new();
-    context.insert("contract_address", "0xCONTRACT123...XYZ");
-    context.insert("grant_amount", "100.00");
-    context.insert("developer_name", "vitalik");
-    context.insert("developer_address", "0xABC123...DEF");
-    context.insert("gas_fee", "0.1");
-    context.insert("tx_hash", "0x12345...XYZ");
-
-    tera.render("close_issue.tera", &context).unwrap()
+    let context = HashMap::from([
+        ("contract_address", "0xCONTRACT123...XYZ"),
+        ("grant_amount", "100.00"),
+        ("developer_name", "vitalik"),
+        ("developer_address", "0xABC123...DEF"),
+        ("gas_fee", "0.1"),
+        ("tx_hash", "0x12345...XYZ"),
+    ]);
+    generate_template(context, "close_issue.tera")
 }
 
 pub fn new_pull_request() -> String {
-    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
+    let context = HashMap::from([
+        ("developer_name", "vitalik"),
+        ("developer_address", "0xABC123...DEF"),
+        ("gas_fee", "0.1"),
+        ("tx_hash", "0x12345...XYZ"),
+    ]);
 
-    let mut context = Context::new();
-    context.insert("developer_name", "vitalik");
-    context.insert("developer_address", "0xABC123...DEF");
-    context.insert("gas_fee", "0.1");
-    context.insert("tx_hash", "0x12345...XYZ");
-
-    tera.render("new_pull_request.tera", &context).unwrap()
+    generate_template(context,"new_pull_request.tera")
 }
 
-
-pub fn open_issue(amount: U256, deadline: U256) -> String {
-    let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
-
-    let mut context = Context::new();
-    context.insert("grant_creator_address", "0xABC123...DEF");
-    context.insert("grant_amount", &format_type(amount));
-    context.insert("contract_address", "0xCONTRACT123...XYZ");
-    context.insert("gas_fee", "0.1");
-    context.insert("tx_hash", "0x12345...XYZ");
-    context.insert("deadline", &u256_to_utc_string(deadline));
-
-    tera.render("open_issue.tera", &context).unwrap()
-}
+pub fn open_issue() -> String {
+    let context = HashMap::from([
+        ("grant_creator_address", "0xCREATOR123...XYZ"),
+        ("grant_amount", "100.00"),
+        ("contract_address", "0xCONTRACT123...XYZ"),
+        ("gas_fee", "0.1"),
+        ("tx_hash", "0x12345...XYZ"),
+    ]);
 
 pub fn increase_deadline() -> String {
     let tera = Tera::new("templates/**/*.tera").expect("Failed to load templates");
@@ -90,11 +81,13 @@ mod test {
     use crate::github::{templates::{increase_deadline, open_issue}, Bot};
 
     use super::close_issue;
+    use super::open_issue;
+
 
     #[tokio::test]
     async fn toto() {
         let bot = Bot::try_new("").unwrap();
-        let _ = bot.add_issue_comment("b3ww", "vGrant", 9, &increase_deadline()).await;
+        let _ = bot.add_issue_comment("b3ww", "vGrant", 9, &open_issue()).await;
         ()
     }
 }

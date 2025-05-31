@@ -1,0 +1,5 @@
+ALTER TABLE users
+ADD COLUMN github_id VARCHAR,
+ADD COLUMN github_username VARCHAR,
+ADD COLUMN avatar_url VARCHAR,
+ADD COLUMN access_token VARCHAR;
