@@ -7,6 +7,7 @@ use axum::{
 };
 use axum_extra::extract::cookie::{Cookie, CookieJar};
 use serde::{Deserialize};
+use std::env;
 
 use crate::repository::DbPool;
 use crate::api::service::{OAuthService, OAuthServiceError};
@@ -86,9 +87,10 @@ async fn github_callback(
                 .build();
 
             // Redirect to frontend with success
+            let success_redirect_url = env::var("AUTH_SUCCESS_REDIRECT_URL").unwrap_or_else(|_| "/auth/success".to_string());
             (
                 CookieJar::new().add(auth_cookie).remove(Cookie::from("csrf_token")),
-                Redirect::to("/auth/success"),
+                Redirect::to(&success_redirect_url),
             )
                 .into_response()
         }
