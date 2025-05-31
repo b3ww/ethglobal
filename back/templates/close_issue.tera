@@ -6,7 +6,7 @@
 - **Developer**: [`{{ developer_name }}` - `{{ developer_address }}`](https://worldchain.xyz/address/{{ developer_address }})
 
 ### Grants Details 
-- **Awarded**: {{ grant_amount }} USDC <img src="" alt="USDC coin" style="width:50px;"/>
+- **Awarded**: {{ grant_amount }} USDC <img src="https://raw.githubusercontent.com/b3ww/vGrant/template/images/USDC.png" alt="USDC" width="14" style="vertical-align: middle;">
 - **Contract** [`{{ contract_address }}`](https://worldchain.xyz/address/{{ contract_address }})
 
 ### Transaction details

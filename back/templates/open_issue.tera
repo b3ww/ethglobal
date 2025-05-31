@@ -2,7 +2,7 @@
 
 ### Grants Details 
 - **Funder**: [`{{ grant_creator_address }}`](https://worldchain.xyz/address/{{ grant_creator_address }})
-- **Amount**: {{ grant_amount }} USDC
+- **Awarded**: {{ grant_amount }} USDC <img src="https://raw.githubusercontent.com/b3ww/vGrant/template/images/USDC.png" alt="USDC" width="14" style="vertical-align: middle;">
 - **Contract**: [`{{ contract_address }}`](https://worldchain.xyz/address/{{ contract_address }})
 
 🔒 The funds are securely held by the smart contract until this issue is resolved.
