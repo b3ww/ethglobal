@@ -1,8 +1,8 @@
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { GradientButton } from '@/components/GradientButton';
 import { ModeToggle } from '@/components/mode-toggle';
+import { Button } from './ui/button';
 
 export const Navbar = () => {
   return (
@@ -35,7 +35,7 @@ export const Navbar = () => {
             <Link to="/login" className="hover:text-accent transition-colors">
               Login
             </Link>
-            <GradientButton>
+            <Button>
               <Link
                 to="/register"
                 className="flex items-center space-x-2 group-hover:text-accent transition-colors"
@@ -43,7 +43,7 @@ export const Navbar = () => {
                 <span>Register</span>
                 <ChevronRight />
               </Link>
-            </GradientButton>
+            </Button>
           </div>
         </div>
       </div>
