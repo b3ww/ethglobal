@@ -6,14 +6,24 @@ import './index.css';
 
 import { ThemeProvider } from '@/components/theme-provider.tsx';
 import { WalletProvider } from '@/providers/WalletProvider';
+import { ProofProvider } from '@vlayer/react';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <WalletProvider>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
+        <ProofProvider
+          config={{
+            proverUrl: import.meta.env.VITE_PROVER_URL,
+            wsProxyUrl: import.meta.env.VITE_WS_PROXY_URL,
+            notaryUrl: import.meta.env.VITE_NOTARY_URL,
+            token: import.meta.env.VITE_VLAYER_API_TOKEN,
+          }}
+        >
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </ProofProvider>
       </WalletProvider>
     </BrowserRouter>
   </StrictMode>,
