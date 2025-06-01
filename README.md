@@ -32,7 +32,7 @@ graph LR
 ## User Story
 **Alice** 👩‍💼 needs a **Blender** feature her team can't build. She:
 1. Creates GitHub issue [#1234]()
-2. Highlight by funding [**USDC**](https://coinmarketcap.com/currencies/usd-coin/) grant (Vault) with deadline
+2. Highlight by funding [**USDC**](https://coinmarketcap.com/currencies/usd-coin/) grant (Vault escrow) with deadline
 
 **Bob** 👨‍💻 wants paid open source work. He:
 1. Finds **Alice**'s issue via grant board
