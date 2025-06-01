@@ -32,7 +32,7 @@ export const Navbar = () => {
         </Link>
 
         <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="space-x-2">
+          <NavigationMenuList className="ml-28 space-x-16">
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild

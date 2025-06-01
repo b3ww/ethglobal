@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useGithubAccountProof } from '../hooks/useGithubAccountProof';
 
-export const ExtensionButton = ({ onSucceed }: { onSucceed: () => void }) => {
+export const ExtensionButton = ({
+  onSucceed,
+}: {
+  onSucceed: (providerResult: any) => void;
+}) => {
   const { address } = useAccount();
   const [buttonText, setButtonText] = useState('Open Extension');
 
@@ -26,7 +30,7 @@ export const ExtensionButton = ({ onSucceed }: { onSucceed: () => void }) => {
   useEffect(() => {
     if (result) {
       setButtonText('Proving completed');
-      onSucceed();
+      onSucceed(result);
     }
   }, [result]);
 

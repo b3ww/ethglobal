@@ -84,11 +84,7 @@ export const GrantPage = () => {
   const [issueUrl, setIssueUrl] = useState('');
   const [issueId, setIssueId] = useState('');
   const [amount, setAmount] = useState('');
-  const [contractAddress, setContractAddress] = useState(
-    '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
-  );
   const [tokenAddress, setTokenAddress] = useState<`0x${string}` | null>(null);
-  const [isAccountVerified, setIsAccountVerified] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
   const [txHash, setTxHash] = useState<string | null>(null);
@@ -117,25 +113,13 @@ export const GrantPage = () => {
 
   // Hooks pour interagir avec les contrats
   const { writeContractAsync, isPending, isError, error } = useWriteContract();
-  const { data: readData, refetch: refetchRead } = useReadContract({
-    address: contractAddress as `0x${string}`,
-    abi: vgrantABI,
-    functionName: 'isVerified',
-    args: [address as `0x${string}`],
-    query: {
-      enabled: !!address && !!contractAddress,
-    },
-  });
 
   // Get token address from contract
   const { data: tokenAddressData, refetch: refetchTokenAddress } =
     useReadContract({
-      address: contractAddress as `0x${string}`,
+      address: import.meta.env.VITE_VERIFIER_ADDRESS,
       abi: vgrantABI,
       functionName: 'bountyToken',
-      query: {
-        enabled: !!contractAddress,
-      },
     });
 
   // Check token allowance
@@ -143,9 +127,12 @@ export const GrantPage = () => {
     address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     functionName: 'allowance',
-    args: [address as `0x${string}`, contractAddress as `0x${string}`],
+    args: [
+      address as `0x${string}`,
+      import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
+    ],
     query: {
-      enabled: !!address && !!tokenAddress && !!contractAddress,
+      enabled: !!address && !!tokenAddress,
     },
   });
 
@@ -156,14 +143,6 @@ export const GrantPage = () => {
   } = useWaitForTransactionReceipt({
     hash: txHash as `0x${string}` | undefined,
   });
-
-  // Update account verification status
-  useEffect(() => {
-    if (readData !== undefined) {
-      setIsAccountVerified(readData as boolean);
-      console.log('Account verification status:', readData);
-    }
-  }, [readData]);
 
   // Update token address
   useEffect(() => {
@@ -184,18 +163,17 @@ export const GrantPage = () => {
 
   // Refetch data when address or contract address changes
   useEffect(() => {
-    if (address && contractAddress) {
-      refetchRead();
+    if (address) {
       refetchTokenAddress();
     }
-  }, [address, contractAddress, refetchRead, refetchTokenAddress]);
+  }, [address, refetchTokenAddress]);
 
   // Refetch allowance when token address changes or amount changes
   useEffect(() => {
-    if (address && tokenAddress && contractAddress) {
+    if (address && tokenAddress) {
       refetchAllowance();
     }
-  }, [address, tokenAddress, contractAddress, amount, refetchAllowance]);
+  }, [address, tokenAddress, amount, refetchAllowance]);
 
   // Réinitialiser le formulaire après confirmation
   useEffect(() => {
@@ -232,7 +210,7 @@ export const GrantPage = () => {
 
   // Function to approve token spending
   const handleApproveToken = async () => {
-    if (!tokenAddress || !amount || !contractAddress || !address) {
+    if (!tokenAddress || !amount || !address) {
       toast.error('Données manquantes', {
         description: "Impossible d'approuver le token. Données manquantes.",
       });
@@ -247,7 +225,7 @@ export const GrantPage = () => {
         address: tokenAddress,
         abi: erc20ABI,
         functionName: 'approve',
-        args: [contractAddress as `0x${string}`, amountInWei],
+        args: [import.meta.env.VITE_VERIFIER_ADDRESS, amountInWei],
       });
 
       if (hash) {
@@ -271,14 +249,7 @@ export const GrantPage = () => {
   const handlePlaceGrant = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      !issueUrl ||
-      !issueId ||
-      !amount ||
-      !contractAddress ||
-      !deadline ||
-      !tokenAddress
-    ) {
+    if (!issueUrl || !issueId || !amount || !deadline || !tokenAddress) {
       toast.error('Champs manquants', {
         description: 'Veuillez remplir tous les champs',
       });
@@ -301,15 +272,6 @@ export const GrantPage = () => {
       return;
     }
 
-    // Vérifier que le compte est vérifié
-    if (!isAccountVerified) {
-      toast.error('Compte non vérifié', {
-        description:
-          "Votre compte doit être vérifié pour placer un grant. Veuillez vous enregistrer d'abord.",
-      });
-      return;
-    }
-
     // Vérifier que le token est approuvé
     if (!isApproved) {
       toast.error('Token non approuvé', {
@@ -327,7 +289,7 @@ export const GrantPage = () => {
       const issueIdNumber = parseInt(issueId);
 
       const hash = await writeContractAsync({
-        address: contractAddress as `0x${string}`,
+        address: import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
         abi: vgrantABI,
         functionName: 'addBounty',
         args: [
@@ -368,26 +330,6 @@ export const GrantPage = () => {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label
-                htmlFor="contractAddress"
-                className="text-sm font-medium flex items-center gap-2"
-              >
-                Adresse du contrat
-                <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-md font-mono">
-                  DEBUG
-                </span>
-              </label>
-              <Input
-                id="contractAddress"
-                placeholder="0x..."
-                value={contractAddress}
-                onChange={(e) => setContractAddress(e.target.value)}
-                required
-                className="border-2 border-dashed border-yellow-400 bg-yellow-50"
-              />
-            </div>
-
             <div className="space-y-2">
               <label htmlFor="issueUrl" className="text-sm font-medium">
                 URL de l'issue
@@ -454,51 +396,6 @@ export const GrantPage = () => {
           </CardContent>
 
           <CardFooter className="flex flex-col space-y-4">
-            {/* Statut de vérification du compte */}
-            {isConnected && (
-              <div className="text-sm mb-2 flex items-center justify-center gap-2">
-                <span>Statut du compte:</span>
-                {isAccountVerified ? (
-                  <span className="text-green-500 font-medium flex items-center gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                    Vérifié
-                  </span>
-                ) : (
-                  <span className="text-red-500 font-medium flex items-center gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="15" y1="9" x2="9" y2="15"></line>
-                      <line x1="9" y1="9" x2="15" y2="15"></line>
-                    </svg>
-                    Non vérifié
-                  </span>
-                )}
-              </div>
-            )}
-
             {/* Bouton d'approbation ou de placement */}
             {!isApproved && amount && tokenAddress ? (
               <Button
@@ -506,11 +403,7 @@ export const GrantPage = () => {
                 className="w-full"
                 onClick={handleApproveToken}
                 disabled={
-                  isPending ||
-                  isConfirming ||
-                  isApproving ||
-                  !isConnected ||
-                  !isAccountVerified
+                  isPending || isConfirming || isApproving || !isConnected
                 }
               >
                 {isApproving
@@ -523,12 +416,7 @@ export const GrantPage = () => {
               <Button
                 type="submit"
                 className="w-full"
-                disabled={
-                  isPending ||
-                  isConfirming ||
-                  !isConnected ||
-                  !isAccountVerified
-                }
+                disabled={isPending || isConfirming || !isConnected}
               >
                 {isPending
                   ? "En attente d'approbation..."
@@ -536,14 +424,6 @@ export const GrantPage = () => {
                     ? 'Confirmation en cours...'
                     : 'Placer le Grant'}
               </Button>
-            )}
-
-            {/* Message d'aide pour la vérification du compte */}
-            {isConnected && !isAccountVerified && (
-              <p className="text-xs text-amber-500 text-center">
-                Votre compte n'est pas vérifié. Veuillez vous enregistrer avant
-                de placer un grant.
-              </p>
             )}
 
             {/* Statut de la transaction */}
