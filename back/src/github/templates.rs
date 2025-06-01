@@ -30,20 +30,18 @@ pub fn u256_to_utc_string(timestamp: U256) -> String {
 pub fn close_issue(
     grant_amount: U256,
     developer_address: Address,
-    dev_github_id: I256,
+    github_id: I256,
 
 ) -> String {
-    let contract_address_str = contract_address.to_string();
     let developer_address_str = developer_address.to_string();
-    let tx_hash_str = tx_hash.to_string();
     let amount_str = format_type(grant_amount);
+    let github_id = format_type(github_id);
 
     let context = HashMap::from([
-        ("contract_address", contract_address_str.as_str()),
         ("grant_amount", amount_str.as_str()),
-        ("developer_name", developer_name.as_str()),
         ("developer_address", developer_address_str.as_str()),
-        ("tx_hash", tx_hash_str.as_str()),
+        ("github_id", github_id.as_str()),
+
     ]);
 
     generate_template(context, "close_issue.tera")
@@ -55,14 +53,12 @@ pub fn open_issue(
     deadline: U256,
 ) -> String {
     let grant_creator_address_str = grant_creator_address.to_string();
-    let contract_address_str = contract_address.to_string();
     let grant_amount_str = format_type(grant_amount);
     let deadline_str = u256_to_utc_string(deadline);
 
     let context = HashMap::from([
         ("grant_creator_address", grant_creator_address_str.as_str()),
         ("grant_amount", grant_amount_str.as_str()),
-        ("contract_address", contract_address_str.as_str()),
         ("deadline", deadline_str.as_str()),
     ]);
 
@@ -75,10 +71,8 @@ pub fn increase_deadline(
 ) -> String {
     let deadline = &u256_to_utc_string(deadline);
     let new_deadline = &u256_to_utc_string(new_deadline);
-    let contract_address = &contract_address.to_string();
 
     let context = HashMap::from([
-        ("contract_address", contract_address.as_str()),
         ("deadline",     deadline.as_str()),
         ("new_deadline", new_deadline.as_str()),
     ]);
