@@ -3,23 +3,54 @@ title: vGrant - Fund-on-Merge Crypto Bounty System
 theme: neversink
 highlight: dracula
 highlighter: shiki
-fonts:
-  sans: Inter
-  mono: Fira Code
 layout: cover
+class: text-center
 ---
 
-# ⚡ vGrant  
-## Fund-on-Merge Crypto Bounty System
+# 💸 vGrant  
+## Autonomous Crypto Bounties
 
-Zero approvals · PR theft protection · First-merge-wins mechanics
+Zero approvals · PR theft protection · First-merge-wins
 
-<!-- 
-Focus on:
-- Autonomous payouts
-- PR theft protection
-- First-merge-wins mechanics
--->
+<div class="absolute bottom-8 left-0 right-0">
+  <div class="bg-blue-500 text-white px-4 py-1 rounded-full inline-block text-sm">
+    ETHGlobal Prague 2025
+  </div>
+</div>
+
+---
+layout: top-title
+color: red-light
+---
+
+:: title ::
+# 🚀 How vGrant Works
+:: content :: 
+
+# Problem
+Traditional bounties require
+<span v-mark="{ at: 1, color: '#FF0000', type: 'underline' }">
+   manual approvals 
+</span>
+and suffer from payment delays
+
+
+---
+layout: top-title
+color: green-light
+side: r
+---
+
+:: title ::
+# 🚀 How vGrant Works
+:: content :: 
+
+# Solution 
+Autonomous payouts triggered by 
+<span v-mark="{ at: 1, color: '#00BB00', type: 'underline' }">
+code merge
+</span>
+
 
 ---
 layout: top-title
@@ -27,55 +58,73 @@ color: blue
 ---
 
 :: title ::
-# 🚀 vGrant Overview
+# 🚀 How vGrant Works
 :: content :: 
 
-**Grants with autonomous, trustless payouts**  
-Automated crypto payments upon first valid code integration
 
-```mermaid
-graph LR
-    F[💸 Funder] -->|1 - Fund Grant| C[📜 Smart Contract]
-    D[👨‍💻 Developer] -->|2 - Submit PR| G[🐙 GitHub]
-    G -->|3 - First Merge| C
-    C -->|4 - Auto-Payout| D
-```
+<div class="grid grid-cols-4 gap-6 mt-12">
+  <!-- Step 1 -->
+  <div class="bg-blue-50 rounded-2xl p-6 border-2 border-blue-200 flex flex-col items-center justify-center text-center">
+    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+      <div class="text-3xl">💸</div>
+    </div>
+    <div class="font-bold text-xl mb-2">1. Fund Grant</div>
+    <p class="text-blue-700">Funder locks crypto in smart contract</p>
+  </div>
+  
+  <!-- Step 2 -->
+  <div class="bg-amber-50 rounded-2xl p-6 border-2 border-amber-200 flex flex-col items-center justify-center text-center">
+    <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+      <div class="text-3xl">👨‍💻</div>
+    </div>
+    <div class="font-bold text-xl mb-2">2. Submit Code</div>
+    <p class="text-amber-700">Developer submits solution via PR</p>
+  </div>
+  
+  <!-- Step 3 -->
+  <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-200 flex flex-col items-center justify-center text-center">
+    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+      <div class="text-3xl">✅</div>
+    </div>
+    <div class="font-bold text-xl mb-2">3. Merge PR</div>
+    <p class="text-green-700">Maintainer reviews & merges solution</p>
+  </div>
+  
+  <!-- Step 4 -->
+  <div class="bg-purple-50 rounded-2xl p-6 border-2 border-purple-200 flex flex-col items-center justify-center text-center">
+    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+      <div class="text-3xl">💰</div>
+    </div>
+    <div class="font-bold text-xl mb-2">4. Auto-Payout</div>
+    <p class="text-purple-700">Instant crypto payment to developer</p>
+  </div>
+</div>
+
 
 ---
-layout: top-title
+layout: side-title
+titlewidth: is-3
 color: green
 ---
 
 :: title ::
-# 👥 User Story
+# 👥 Key Roles
 :: content ::
 
-<v-switch>
-<template #0>
+**Funder** 👩‍💼
+- Creates GitHub issue
+- Funds grant with crypto
+- Sets deadline
 
-**Alice** 👩‍💼 (Funder):
-1. Creates GitHub issue [#1234]()
-2. Funds grant with USDC + deadline
+**Developer** 👨‍💻
+- Solves technical challenges
+- Submits solution via PR
+- Gets paid instantly on merge
 
-</template>
-
-<template #1>
-
-**Bob** 👨‍💻 (Developer):
-1. Finds issue via grant board
-2. Submits solution via PR
-
-</template>
-
-<template #2>
-
-**Maintainer** 🤵‍♂️:
-1. Reviews PR against standards
-2. Merges → triggers payout
-3. Earns review fee (5-15%)
-
-</template>
-</v-switch>
+**Maintainer** 🤵‍♂️
+- Reviews code quality
+- Merges approved solutions
+- Earns review fee (5-15%)
 
 ---
 layout: top-title
@@ -83,18 +132,30 @@ color: purple
 ---
 
 :: title ::
-# 💸 Funder Journey
+# 💸 Funding Process
 :: content ::
 
-```mermaid
-graph LR
-    A[💸 1. Create Grant] --> B[Define Specs & Deadline]
-    B --> C[🔒 2. Lock USDC]
-    C --> D[🔄 3. Open Grant]
-    D --> E{Resolution}
-    E -->|First Valid Merge| F[🟢 4a. Auto-Payout]
-    E -->|Deadline| G[🔴 4b. Auto-Refund]
-```
+<div class="space-y-4">
+  <div class="flex items-start">
+    <div class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">1</div>
+    <div>Funder creates grant with specifications and budget</div>
+  </div>
+  
+  <div class="flex items-start">
+    <div class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">2</div>
+    <div>Funds locked in smart contract</div>
+  </div>
+  
+  <div class="flex items-start">
+    <div class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">3</div>
+    <div>Grant becomes visible to developers</div>
+  </div>
+  
+  <div class="flex items-start">
+    <div class="bg-purple-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">4</div>
+    <div>If no solution by deadline, funds automatically returned</div>
+  </div>
+</div>
 
 ---
 layout: top-title
@@ -102,17 +163,39 @@ color: amber
 ---
 
 :: title ::
-# 👨‍💻 Developer Journey
+# 👨‍💻 Developer Process
 :: content ::
 
-```mermaid
-flowchart LR
-    A[👨‍💻 1. Find Grant] --> B[2. Link Git Account]
-    B --> C[3. Submit PR]
-    C --> D[4. Maintainer Review]
-    D -->|Approved| E[5. Merge → 💸]
-    D -->|Rejected| C
-```
+<div class="space-y-4">
+  <div class="flex items-start">
+    <div class="bg-amber-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">1</div>
+    <div>Find grant matching your skills</div>
+  </div>
+  
+  <div class="flex items-start">
+    <div class="bg-amber-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">2</div>
+    <div>Link your GitHub account to vGrant</div>
+  </div>
+  
+  <div class="flex items-start">
+    <div class="bg-amber-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">3</div>
+    <div>Submit solution via Pull Request</div>
+  </div>
+  
+  <div class="flex items-start">
+    <div class="bg-amber-100 w-8 h-8 rounded-full flex items-center justify-center mr-3">4</div>
+    <div>First valid merge triggers instant payment</div>
+  </div>
+</div>
+
+---
+layout: section
+color: indigo
+align: c
+---
+
+# Core Innovation
+## Zero-Knowledge Git profiles
 
 ---
 layout: top-title
@@ -120,20 +203,18 @@ color: red
 ---
 
 :: title ::
-# 🛡️ PR Theft Protection
+# 🛡️ Security Features
 :: content ::
 
-```mermaid
-graph LR
-    A[Merge PR] --> B{**ZK Verification**}
-    B -->|Valid| C[💸 Instant Payout]
-    B -->|Invalid| D[🛑 Rejected]
-```
+**PR Theft Protection**
+- ZK-verified contributor identities
+- Prevents solution stealing
+- Ensures fair competition
 
-Using VLayer's ZK-Proofs for:
-- Verified contributor identities
-- Anti-sybil protection
-- Secure notifications
+**Anti-Sybil Measures**
+- Verified GitHub accounts required
+- Prevents duplicate submissions
+- Fair chance for all developers
 
 ---
 layout: top-title
@@ -141,14 +222,23 @@ color: teal
 ---
 
 :: title ::
-# ✅ Benefits Matrix
+# ✅ Key Benefits
 :: content ::
 
-| **Feature**         | **💸 Funder**                  | **👨‍💻 Developer**               |
-|---------------------|--------------------------------|--------------------------------|
-| **Selection**       | Algorithmic - no bias          | Pure meritocracy               |
-| **Payout Timing**   | Reclaim post-deadline          | Instant on merge               |
-| **Focus**           | Define problem → fund          | Code → get paid                |
+**For Funders** 💸
+- Pay only for working solutions
+- No payment delays
+- Global talent access
+
+**For Developers** 👨‍💻
+- Get paid instantly
+- Build reputation through contributions
+- Work on open source projects
+
+**For Maintainers** 🤵‍♂️
+- Earn fees for quality reviews
+- Get features implemented faster
+- Grow project ecosystem
 
 ---
 layout: top-title
@@ -156,29 +246,20 @@ color: emerald
 ---
 
 :: title ::
-# ⚖️ When to Use Bounties
+# ⚖️ When to Use vGrant
 :: content ::
 
-<div class="grid grid-cols-2 gap-8">
-<div>
-
-**✅ Ideal For:**
-- Clear scope (1-3 week tasks)
+**Perfect For** ✅
+- Clear, well-defined tasks
+- Open source contributions
 - Non-core features
-- Budget certainty
-- OSS contributions
+- Quick prototypes
 
-</div>
-<div>
-
-**❌ Avoid For:**
-- Multi-phase projects
-- NDA-protected work
-- High-maintenance features
-- Relationship-heavy work
-
-</div>
-</div>
+**Not Ideal For** ❌
+- Complex multi-phase projects
+- Proprietary/NDA-protected work
+- Features requiring ongoing support
+- Projects needing close collaboration
 
 ---
 layout: top-title
@@ -186,23 +267,25 @@ color: sky-light
 ---
 
 :: title ::
-# 🌐 Why Decentralize?
+# 🌐 Why Blockchain?
 :: content ::
 
-- **0% platform fees** (vs 20% on Upwork)
-- No geo-restrictions
-- Transparent on-chain contracts
-- Censorship-resistant
+**Transparency**
+- All transactions verifiable on-chain
+- No hidden fees or conditions
 
-```go
-// On-chain grant struct
-type Grant struct {
-    funder  common.Address
-    token   common.Address // USDC
-    amount  *big.Int
-    deadline uint64
-}
-```
+**Security**
+- Funds secured by smart contracts
+- Tamper-proof execution
+
+**Efficiency**
+- 0% platform fees
+- Automated processes
+- Global accessibility
+
+**Fairness**
+- First-merge-wins ensures meritocracy
+- Equal opportunity worldwide
 
 ---
 layout: top-title
@@ -213,52 +296,44 @@ color: violet
 # 🏆 Prize Integrations
 :: content ::
 
-<v-switch>
-<template #0>
-
-**VLayer**  
-- ZK-verified identities
-- Email/Git proof verification
-- $4k prize potential
-
+**VLayer - Zero-Knowledge Verification**
 ```solidity
-VLayer.verifyEmail(proof);
+VLayer.verifyContributor(proof);
 ```
+- Identity verification
+- $4,000 prize potential
 
-</template>
-
-<template #1>
-
-**World**  
-- 23M user reach
-- Gasless transactions
-- $10k prize potential
-
+**World - Mass Adoption Platform**
 ```javascript
-WorldSDK.getLiveBounties();
+WorldSDK.getBounties();
 ```
-
-</template>
-</v-switch>
+- 23 million potential users
+- $10,000 prize potential
 
 ---
 layout: center
 ---
 
-# 🚧 Potential Upgrades
-- Multi-consensus models  
-- GitLab integration  
-- Developer portfolios  
-- Priority ranking system  
-- Early completion bonuses  
+# 🚀 Future Development
+
+- Support for multiple Git platforms (GitLab, Bitbucket)
+- Developer reputation system
+- Project priority rankings
+- Early completion bonuses
+- Multi-consensus models
 
 ---
 layout: cover
+class: text-center
 ---
 
 # 💎 vGrant  
-## Autonomous Crypto Bounties
+## Fund-on-Merge Crypto Bounties
 
 **ETHGlobal Prague 2025**  
-https://github.com/your-repo  
-@yourtwitter
+`github.com/your-repo`  
+`@yourtwitterhandle`
+
+<div class="absolute bottom-8 left-0 right-0 text-sm opacity-80">
+Autonomous · Secure · Fair
+</div>
