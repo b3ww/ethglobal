@@ -1,11 +1,10 @@
 import { Route, Routes } from 'react-router';
-import './App.css';
 
 import { Layout } from '@/components/Layout';
-import { Home } from './pages/Home';
+import { Home } from '@/pages/Home';
+import { GrantPage } from '@/pages/PlaceGrant';
+import { ValidateGrantPage } from '@/pages/ValidateGrant';
 import { TemplatePage } from './pages/TemplatePage';
-import { GrantPage } from '@/pages/PlaceGrant.tsx';
-import { ValidateGrantPage } from '@/pages/ValidateGrant.tsx';
 
 function App() {
   return (

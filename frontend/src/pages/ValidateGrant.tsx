@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Card,
   CardContent,
@@ -9,31 +7,28 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useWalletConnection } from '@/lib/hooks/useWalletConnection';
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { Input } from '@/components/ui/input';
+import { useWalletConnection } from '@/hooks/useWalletConnection';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
-// ABI for Vgrant contract (only the functions we need)
 const vgrantABI = [
   {
     name: 'approveBounty',
     type: 'function',
     stateMutability: 'nonpayable',
-    inputs: [
-      { name: '_issue', type: 'string' }
-    ],
+    inputs: [{ name: '_issue', type: 'string' }],
     outputs: [],
   },
   {
     name: 'getBounty',
     type: 'function',
     stateMutability: 'view',
-    inputs: [
-      { name: '_issue', type: 'string' }
-    ],
+    inputs: [{ name: '_issue', type: 'string' }],
     outputs: [
-      { 
+      {
         type: 'tuple',
         components: [
           { name: 'author', type: 'address' },
@@ -42,15 +37,16 @@ const vgrantABI = [
           { name: 'bounty', type: 'uint256' },
           { name: 'deadline', type: 'uint256' },
           { name: 'approved', type: 'bool' },
-          { name: 'claimed', type: 'bool' }
-        ]
-      }
+          { name: 'claimed', type: 'bool' },
+        ],
+      },
     ],
-  }
+  },
 ];
 
 export const ValidateGrantPage = () => {
   const [issueUrl, setIssueUrl] = useState('');
+  // todo: replace with real contract address
   const [contractAddress, setContractAddress] = useState(
     '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
   );
@@ -58,37 +54,34 @@ export const ValidateGrantPage = () => {
 
   const { isConnected, connectWallet } = useWalletConnection();
 
-  // Hooks pour interagir avec les contrats
   const { writeContractAsync, isPending, isError, error } = useWriteContract();
 
-  const { isLoading: isConfirming, isSuccess: isConfirmed, isError: HasFailed } =
-    useWaitForTransactionReceipt({
-      hash: txHash as `0x${string}` | undefined,
-    });
+  const {
+    isLoading: isConfirming,
+    isSuccess: isConfirmed,
+    isError: HasFailed,
+  } = useWaitForTransactionReceipt({
+    hash: txHash as `0x${string}` | undefined,
+  });
 
-  // Réinitialiser le formulaire après confirmation
   useEffect(() => {
     if (isConfirmed) {
       setIssueUrl('');
       setTxHash(null);
-      toast.success("Succès !", {
-        description: "Grant validé avec succès !",
+      toast.success('Succès !', {
+        description: 'Grant validé avec succès !',
+      });
+    } else if (HasFailed) {
+      toast.error('Échec', {
+        description: 'La transaction a échoué',
       });
     }
-  }, [isConfirmed]);
-
-  useEffect(() => {
-    if (HasFailed) {
-      toast.error("Échec", {
-        description: "La transaction a échoué",
-      });
-    }
-  }, [HasFailed]);
+  }, [isConfirmed, HasFailed]);
 
   useEffect(() => {
     if (isError && error) {
       console.error('Erreur de transaction:', error);
-      toast.error("Erreur", {
+      toast.error('Erreur', {
         description: error.message,
       });
     }
@@ -98,15 +91,15 @@ export const ValidateGrantPage = () => {
     e.preventDefault();
 
     if (!issueUrl || !contractAddress) {
-      toast.error("Champs manquants", {
-        description: "Veuillez remplir tous les champs",
+      toast.error('Champs manquants', {
+        description: 'Veuillez remplir tous les champs',
       });
       return;
     }
 
     if (!isConnected) {
-      toast.error("Portefeuille non connecté", {
-        description: "Veuillez connecter votre portefeuille",
+      toast.error('Portefeuille non connecté', {
+        description: 'Veuillez connecter votre portefeuille',
       });
       await connectWallet();
       return;
@@ -123,14 +116,15 @@ export const ValidateGrantPage = () => {
       if (hash) {
         console.log('Hash de la transaction:', hash);
         setTxHash(hash);
-        toast.success("Transaction soumise", {
-          description: "Votre validation est en cours. Veuillez attendre la confirmation.",
+        toast.success('Transaction soumise', {
+          description:
+            'Votre validation est en cours. Veuillez attendre la confirmation.',
         });
       }
     } catch (error) {
       console.error('Erreur lors de la validation du grant:', error);
-      toast.error("Échec", {
-        description: "Échec de la validation du grant. Veuillez réessayer.",
+      toast.error('Échec', {
+        description: 'Échec de la validation du grant. Veuillez réessayer.',
       });
     }
   };
@@ -144,13 +138,17 @@ export const ValidateGrantPage = () => {
           <CardHeader>
             <CardTitle>Validation de Récompense</CardTitle>
             <CardDescription>
-              Validez une récompense pour une issue GitHub avec le contrat Vgrant
+              Validez une récompense pour une issue GitHub avec le contrat
+              Vgrant
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="contractAddress" className="text-sm font-medium flex items-center gap-2">
+              <label
+                htmlFor="contractAddress"
+                className="text-sm font-medium flex items-center gap-2"
+              >
                 Adresse du contrat
                 <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-md font-mono">
                   DEBUG

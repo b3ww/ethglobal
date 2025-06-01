@@ -1,8 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 
 import { ModeToggle } from '@/components/mode-toggle';
-import { Button } from './ui/button';
-import { useWalletConnection } from '@/lib/hooks/useWalletConnection';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -10,7 +8,9 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import { useWalletConnection } from '@/hooks/useWalletConnection';
 import { cn } from '@/lib/utils';
+import { Button } from './ui/button';
 
 export const Navbar = () => {
   const { isConnected, connectWallet, disconnectWallet, formattedAddress } =
