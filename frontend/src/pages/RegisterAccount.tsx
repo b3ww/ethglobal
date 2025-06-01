@@ -9,21 +9,39 @@ import {
 } from '@/components/ui/card';
 import { useWalletConnection } from '@/hooks/useWalletConnection';
 import { useEffect, useState } from 'react';
+import { useWriteContract } from 'wagmi';
+import webProofVerifier from '../../../out/VgrantVerifier.sol/Vgrant.json';
 
-// todo: call contract to know if wallet is already associated
 export const RegisterAccount = () => {
   const { isConnected, connectWallet } = useWalletConnection();
   const [cardIndex, setCardIndex] = useState(0);
 
+  const [providerResult, setProviderResult] = useState();
+  const { writeContractAsync } = useWriteContract();
+
   const cardTitles = [
     'Connect your wallet',
     'Prove ownership',
+    'Store association',
     'Successfully associated',
   ];
   const cardDescriptions = [
     'Connect your wallet to associate it with your GitHub account.',
     'Open the vlayer extension to prove ownership of your GitHub account.',
+    'We will store the association between your wallet and GitHub account on the blockchain.',
     'Your wallet is now successfully associated with your GitHub account.',
+  ];
+  const cardActions = [
+    <Button type="button" className="w-full" onClick={connectWallet}>
+      Connect your wallet
+    </Button>,
+    <ExtensionButton onSucceed={onSucceed} />,
+    <Button type="button" className="w-full" onClick={store}>
+      Store association
+    </Button>,
+    <Button type="button" className="w-full" disabled={true}>
+      Association stored successfully
+    </Button>,
   ];
 
   useEffect(() => {
@@ -34,8 +52,22 @@ export const RegisterAccount = () => {
     }
   }, [isConnected]);
 
-  function onSucceed() {
+  function onSucceed(providerResult: any) {
+    setProviderResult(providerResult);
     setCardIndex((prevIndex) => Math.min(prevIndex + 1, cardTitles.length - 1));
+  }
+
+  async function store() {
+    const hash = await writeContractAsync({
+      address: import.meta.env.VITE_VERIFIER_ADDRESS,
+      abi: webProofVerifier.abi,
+      functionName: 'verifyAccount',
+      args: providerResult,
+    });
+
+    if (hash) {
+      setCardIndex(3);
+    }
   }
 
   return (
@@ -49,18 +81,12 @@ export const RegisterAccount = () => {
           <CardTitle>{cardTitles[cardIndex]}</CardTitle>
         </CardHeader>
 
-        <CardContent className="my-[-20px]">
+        <CardContent>
           <p>{cardDescriptions[cardIndex]}</p>
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-4">
-          {isConnected ? (
-            <ExtensionButton onSucceed={onSucceed} />
-          ) : (
-            <Button type="button" className="w-full" onClick={connectWallet}>
-              Connect your wallet
-            </Button>
-          )}
+          {cardActions[cardIndex]}
         </CardFooter>
       </Card>
     </div>

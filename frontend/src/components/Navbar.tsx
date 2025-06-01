@@ -32,16 +32,11 @@ export const Navbar = () => {
         </Link>
 
         <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="space-x-2">
+          <NavigationMenuList className="ml-42 space-x-24">
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  isActive('/register-account') &&
-                    'text-accent font-semibold bg-accent/10',
-                  'border-border/60 border',
-                )}
+                className={cn(navigationMenuTriggerStyle())}
               >
                 <Link to="/register-account">Register account</Link>
               </NavigationMenuLink>
@@ -49,17 +44,12 @@ export const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  isActive('/create-grant') &&
-                    'text-accent font-semibold bg-accent/10',
-                  'border-border/60 border',
-                )}
+                className={cn(navigationMenuTriggerStyle())}
               >
                 <Link to="/create-grant">Create grant</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            {/* <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
                 className={cn(
@@ -71,7 +61,7 @@ export const Navbar = () => {
               >
                 <Link to="/validate-grant">Validate grant</Link>
               </NavigationMenuLink>
-            </NavigationMenuItem>
+            </NavigationMenuItem> */}
           </NavigationMenuList>
         </NavigationMenu>
 

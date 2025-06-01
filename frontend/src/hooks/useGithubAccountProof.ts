@@ -9,7 +9,7 @@ import { expectUrl, notarize, startPage } from '@vlayer/sdk/web_proof';
 import { useEffect, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 import { Abi, ContractFunctionName } from 'viem';
-import webProofProver from '../../../out/WebProofProver.sol/WebProofProver.json';
+import webProofProver from '../../../out/VgrantGithubProver.sol/VgrantProver.json';
 import { UseChainError, WebProofError } from '../errors';
 
 const webProofConfig: WebProofConfig<Abi, string> = {
@@ -51,7 +51,7 @@ const webProofConfig: WebProofConfig<Abi, string> = {
   ],
 };
 
-export const useGithubAccountProof = () => {
+export const useGithubAccountProof = (): any => {
   const [error, setError] = useState<Error | null>(null);
 
   const {
@@ -81,7 +81,7 @@ export const useGithubAccountProof = () => {
     address: import.meta.env.VITE_PROVER_ADDRESS as `0x${string}`,
     proverAbi: webProofProver.abi as Abi,
     chainId: chain?.id,
-    functionName: 'main', // todo rename to verifyGithub
+    functionName: 'verifyGithub',
     gasLimit: Number(import.meta.env.VITE_GAS_LIMIT),
   };
 
@@ -120,9 +120,9 @@ export const useGithubAccountProof = () => {
   useEffect(() => {
     if (result) {
       console.log('proverResult', result);
-      setProverResult(JSON.stringify(result));
+      setProverResult(result.toString());
     }
-  }, [JSON.stringify(result)]);
+  }, [result]);
 
   return {
     requestWebProof,
