@@ -161,45 +161,15 @@ graph LR
 
 **VLayer** provides verifiable data infrastructure that bridges Web2 and Web3, enabling developers to integrate and verify real-world data — **like web and email proofs** — into Ethereum smart contracts using zero-knowledge proofs and familiar tools like Solidity.
 
-**Email Proof Integration:**
-```solidity
-function verifyResolution(
-    bytes32 issueId,
-    EmailProof memory proof
-) external {
-    require(VLayer.verifyEmail(proof), "Invalid proof");
-    _processPayout(issueId);
-}
-```
-
 - **ZK-verified contributor identities**
 - Anti-sybil protection for submissions
-- Secure multi-platform notifications
-
----
-
-<img src="images/world.png" alt="world logo" width="100"  align="right"/>
-
-**World** offers developers a chance to build mini-apps with instant access to 23 million World App users, featuring integrated wallets and free transactions on World Chain, while providing bounties for projects using their Minikit SDK.
-
-**In-App Grant Discovery:**
-```javascript
-WorldSDK.connectWallet();
-const bounties = await WorldSDK.getLiveBounties();
-```
-
-- Instant access to 23M World App users
-- Gasless transactions via World Chain
-- Embedded wallet integration
-
 
 ## 🏅 [Prize](https://ethglobal.com/events/prague/prizes#world) Submissions
 
 | Prize                          | Category                  | Value    |
 |--------------------------------|---------------------------|----------|
 | **VLayer**                     | Most inspiring use        | $4,000   |
-| **VLayer**                     | Best Email Proofs         | $2,000   |
-| **World**                      | Best Mini App             | $10,000  |
+| **VLayer**                     | Best Web Proofs           | $2,000   |
 
 
 
