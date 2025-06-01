@@ -84,8 +84,8 @@ A **Developer** can work on available granted issues.
 The first valid merge claim the Grant 💸
 ```mermaid
 flowchart LR
-    A[👨‍💻 1 - Find Grant] --> R
-    B[3 - Submit PR with Solution] -->R[2 - Link Git account to vGrant] --> B
+    A[👨‍💻 1 - Find Grant] --> R[🛡️ 2 - Link Git account and wallet using **vGrant**]
+    R --> B[3 - Submit PR with Solution]
     B --> C[4 - Maintainer Reviews]
     C --> D{5 - Approved?}
     D -->|Yes| E[6 - Merge PR]
@@ -95,9 +95,12 @@ flowchart LR
 ## ✨ Core Innovation
 
 ### 🛡️ PR Theft Protection
+By using the **Web Proof** technology of **vlayer**, we can ensure a **Git Account** is linked to a **Wallet Address** by enforcing a registration of the developer before a valid merge (*Step 2. in above diagram*). We use our **front-end** to simplify the interaction with our smart contract.
+
+
 ```mermaid
 graph LR
-    A[Merge PR] --> B{**VLayer** Verification}
+    A[Resolved Issue] --> B{Has issuer registered}
     B -->|Valid Git account| C[💸 - Instant USDC Payout]
     C --> L[✅ Grant Claimed]
     B -->|No Valid User| D[🛑 - Claim Rejected]
@@ -112,7 +115,7 @@ graph LR
 ## 🔑 Key Benefits
 | **Feature**         | **💸 Funder**                  | **👨‍💻 Developer**               |
 |---------------------|-----------------------------------|-----------------------------------|
-| **Winner Selection**| Algorithmic - no bias            | Pure meritocracy win         |
+| **Winner Selection**| Algorithmic - no bias            | Meritocracy win         |
 | **Fund Handling**   | Reclaim anytime post-deadline    | Instant payout on merge
 | **Technical Focus** | Define problem → fund → wait      | Find issue → code → get paid      |
 
