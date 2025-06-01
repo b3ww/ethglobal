@@ -98,8 +98,8 @@ flowchart LR
 By using the **Web Proof** technology of **vlayer**, we ensure a **Git Account** is linked to a **Wallet Address** by enforcing a registration of the developer before a valid merge (*Step 2. in above diagram*). We use our **front-end** to simplify the interaction with our smart contract.
 
 We enables a fluid **User Experience** for a **Zero-Knowledge-Proof Verification** (ZK-proof) by only:
-- Installing [**vlayer extension**](https://chromewebstore.google.com/detail/vlayer/jbchhcgphfokabmfacnkafoeeeppjmpl?pli=1) (Only for Chromium)
-- Installing compatible wallet (e.g.: Metamask)
+- Installing [**vlayer extension**](https://chromewebstore.google.com/detail/vlayer/jbchhcgphfokabmfacnkafoeeeppjmpl?pli=1) (Only for Chromium).
+- Installing compatible wallet (e.g.: Metamask).
 - Following step on [vGrant]() website.
 
 ⚠️ It is recommended to take a look at [**Security Consideration**](https://book.vlayer.xyz/features/web.html#security-considerations) before using **Web Proof** technology.
