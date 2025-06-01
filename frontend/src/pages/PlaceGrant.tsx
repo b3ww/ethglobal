@@ -268,20 +268,20 @@ export const GrantPage = () => {
 
   return (
     <div className="flex flex-col items-center space-y-12 pt-16">
-      <h1 className="text-3xl font-bold">Créer une Récompense</h1>
+      <h1 className="text-3xl font-bold">Create a grant</h1>
 
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Détails de la Récompense</CardTitle>
+          <CardTitle>Grant details</CardTitle>
           <CardDescription>
-            Créez une récompense pour une issue GitHub avec le contrat Vgrant
+            Create a grant for a GitHub issue using the Vgrant contract
           </CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="issueUrl" className="text-sm font-medium">
-              URL de l'issue
+              Issue URL
             </label>
             <Input
               id="issueUrl"
@@ -294,7 +294,7 @@ export const GrantPage = () => {
 
           <div className="space-y-2">
             <label htmlFor="issueId" className="text-sm font-medium">
-              ID de l'issue
+              Issue ID
             </label>
             <Input
               id="issueId"
@@ -306,13 +306,13 @@ export const GrantPage = () => {
               required
             />
             <p className="text-xs text-muted-foreground">
-              L'ID numérique de l'issue GitHub (ex: 123 pour issue #123)
+              The id of the GitHub issue (e.g., 123 for issue #123)
             </p>
           </div>
 
           <div className="space-y-2">
             <label htmlFor="amount" className="text-sm font-medium">
-              Montant (Tokens)
+              Amount of tokens
             </label>
             <Input
               id="amount"
@@ -326,14 +326,14 @@ export const GrantPage = () => {
             />
             <p className="text-xs text-muted-foreground">
               {tokenAddress
-                ? `Utilisant le token à l'adresse ${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`
-                : 'Chargement du token...'}
+                ? `Using token at address ${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`
+                : 'Loading token...'}
             </p>
           </div>
 
           <div className="space-y-2">
             <label htmlFor="deadline" className="text-sm font-medium">
-              Date limite (minimum 48h à partir de maintenant)
+              Limit date (minimum 48h from now)
             </label>
             <DatePicker
               date={deadline}
