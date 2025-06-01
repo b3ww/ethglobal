@@ -36,12 +36,7 @@ export const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  isActive('/register-account') &&
-                    'text-accent font-semibold bg-accent/10',
-                  'border-border/60 border',
-                )}
+                className={cn(navigationMenuTriggerStyle())}
               >
                 <Link to="/register-account">Register account</Link>
               </NavigationMenuLink>
@@ -49,12 +44,7 @@ export const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  isActive('/create-grant') &&
-                    'text-accent font-semibold bg-accent/10',
-                  'border-border/60 border',
-                )}
+                className={cn(navigationMenuTriggerStyle())}
               >
                 <Link to="/create-grant">Create grant</Link>
               </NavigationMenuLink>
