@@ -97,21 +97,21 @@ flowchart LR
 ### 🛡️ PR Theft Protection
 By using the **Web Proof** technology of **vlayer**, we ensure a **Git Account** is linked to a **Wallet Address** by enforcing a registration of the developer before a valid merge (*Step 2. in above diagram*). We use our **front-end** to simplify the interaction with our smart contract.
 
-We enables a fluid **User Experience** for a **Zero-Knowledge-Proof Verification** (ZK-proof) by only:
-- Installing [**vlayer extension**](https://chromewebstore.google.com/detail/vlayer/jbchhcgphfokabmfacnkafoeeeppjmpl?pli=1) (Only for Chromium).
-- Installing compatible wallet (e.g.: Metamask).
-- Following step on [vGrant]() website.
+We enables a fluid **User Experience** for a **Zero-Knowledge-Proof Verification** (ZK-proof), opposing **Cryptographical RSA challenge** using **Git SSH keys**, which may be challenging for casual user.
+
+To use **vGrant**, you should:
+- Install [**vlayer extension**](https://chromewebstore.google.com/detail/vlayer/jbchhcgphfokabmfacnkafoeeeppjmpl?pli=1) (Only for Chromium).
+- Install compatible wallet (e.g.: Metamask).
+- Follow step on [vGrant]() website.
 
 ⚠️ It is recommended to take a look at [**Security Consideration**](https://book.vlayer.xyz/features/web.html#security-considerations) before using **Web Proof** technology.
 
-At the opposite of **Cryptographical RSA challenge**, which may be more challenging for casual user.
-
 ```mermaid
 graph LR
-    A[Resolved Issue] --> B{Has issuer registered}
-    B -->|Valid Git account| C[💸 - Instant USDC Payout]
+    A[Resolved Issue] --> B{Issuer registered on vGrant ?}
+    B -->|Valid Linked Git Account| C[💸 - Instant USDC Payout]
     C --> L[✅ Grant Claimed]
-    B -->|No Valid User| D[🛑 - Claim Rejected]
+    B -->|Missing Account| D[🛑 - Claim Rejected]
     D --> M[⚠️ Grant Pending - Alert Maintainers]
 
 ```
