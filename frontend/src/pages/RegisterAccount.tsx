@@ -81,7 +81,7 @@ export const RegisterAccount = () => {
           <CardTitle>{cardTitles[cardIndex]}</CardTitle>
         </CardHeader>
 
-        <CardContent className="my-[-20px]">
+        <CardContent>
           <p>{cardDescriptions[cardIndex]}</p>
         </CardContent>
 

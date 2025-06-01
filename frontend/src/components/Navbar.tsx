@@ -32,7 +32,7 @@ export const Navbar = () => {
         </Link>
 
         <NavigationMenu className="hidden md:flex">
-          <NavigationMenuList className="ml-28 space-x-16">
+          <NavigationMenuList className="ml-64 space-x-16">
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
@@ -59,7 +59,7 @@ export const Navbar = () => {
                 <Link to="/create-grant">Create grant</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
-            <NavigationMenuItem>
+            {/* <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
                 className={cn(
@@ -71,7 +71,7 @@ export const Navbar = () => {
               >
                 <Link to="/validate-grant">Validate grant</Link>
               </NavigationMenuLink>
-            </NavigationMenuItem>
+            </NavigationMenuItem> */}
           </NavigationMenuList>
         </NavigationMenu>
 

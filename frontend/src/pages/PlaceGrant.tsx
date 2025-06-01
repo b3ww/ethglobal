@@ -12,7 +12,6 @@ import { Input } from '@/components/ui/input';
 import { useWalletConnection } from '@/hooks/useWalletConnection';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { parseEther } from 'viem';
 import {
   useReadContract,
   useWaitForTransactionReceipt,
@@ -85,8 +84,6 @@ export const GrantPage = () => {
   const [issueId, setIssueId] = useState('');
   const [amount, setAmount] = useState('');
   const [tokenAddress, setTokenAddress] = useState<`0x${string}` | null>(null);
-  const [isApproved, setIsApproved] = useState(false);
-  const [isApproving, setIsApproving] = useState(false);
   const [txHash, setTxHash] = useState<string | null>(null);
 
   // Calculer la date minimum (aujourd'hui + 48h)
@@ -109,7 +106,7 @@ export const GrantPage = () => {
     return defaultDate;
   });
 
-  const { isConnected, connectWallet, address } = useWalletConnection();
+  const { isConnected, address } = useWalletConnection();
 
   // Hooks pour interagir avec les contrats
   const { writeContractAsync, isPending, isError, error } = useWriteContract();
@@ -123,7 +120,7 @@ export const GrantPage = () => {
     });
 
   // Check token allowance
-  const { data: allowanceData, refetch: refetchAllowance } = useReadContract({
+  const { refetch: refetchAllowance } = useReadContract({
     address: tokenAddress as `0x${string}`,
     abi: erc20ABI,
     functionName: 'allowance',
@@ -152,15 +149,6 @@ export const GrantPage = () => {
     }
   }, [tokenAddressData]);
 
-  // Update approval status
-  useEffect(() => {
-    if (allowanceData && amount) {
-      const amountInWei = parseEther(amount);
-      setIsApproved(BigInt(allowanceData as string) >= amountInWei);
-      console.log('Allowance:', allowanceData, 'Required:', amountInWei);
-    }
-  }, [allowanceData, amount]);
-
   // Refetch data when address or contract address changes
   useEffect(() => {
     if (address) {
@@ -182,7 +170,6 @@ export const GrantPage = () => {
       setIssueId('');
       setAmount('');
       setTxHash(null);
-      setIsApproved(false);
       // Réinitialiser la date limite à la valeur minimale (aujourd'hui + 48h)
       setDeadline(new Date(minDeadline));
       toast.success('Succès !', {
@@ -208,24 +195,20 @@ export const GrantPage = () => {
     }
   }, [isError, error]);
 
-  // Function to approve token spending
-  const handleApproveToken = async () => {
-    if (!tokenAddress || !amount || !address) {
-      toast.error('Données manquantes', {
-        description: "Impossible d'approuver le token. Données manquantes.",
+  const handle = async () => {
+    if (!issueUrl || !issueId || !amount || !deadline || !isConnected) {
+      toast.error('Champs manquants', {
+        description: 'Veuillez remplir tous les champs',
       });
       return;
     }
 
-    setIsApproving(true);
     try {
-      const amountInWei = parseEther(amount);
-
       const hash = await writeContractAsync({
-        address: tokenAddress,
+        address: tokenAddress as `0x${string}`,
         abi: erc20ABI,
         functionName: 'approve',
-        args: [import.meta.env.VITE_VERIFIER_ADDRESS, amountInWei],
+        args: [import.meta.env.VITE_VERIFIER_ADDRESS, amount],
       });
 
       if (hash) {
@@ -241,51 +224,18 @@ export const GrantPage = () => {
       toast.error("Échec de l'approbation", {
         description: "Échec de l'approbation du token. Veuillez réessayer.",
       });
-    } finally {
-      setIsApproving(false);
-    }
-  };
-
-  const handlePlaceGrant = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!issueUrl || !issueId || !amount || !deadline || !tokenAddress) {
-      toast.error('Champs manquants', {
-        description: 'Veuillez remplir tous les champs',
-      });
-      return;
     }
 
-    // Vérifier que la date limite est au moins 48h dans le futur
-    if (!deadline || deadline < minDeadline) {
+    if (deadline < minDeadline) {
       toast.error('Date limite invalide', {
         description: 'La date limite doit être au moins 48h dans le futur',
       });
       return;
     }
 
-    if (!isConnected) {
-      toast.error('Portefeuille non connecté', {
-        description: 'Veuillez connecter votre portefeuille',
-      });
-      await connectWallet();
-      return;
-    }
-
-    // Vérifier que le token est approuvé
-    if (!isApproved) {
-      toast.error('Token non approuvé', {
-        description:
-          "Vous devez d'abord approuver le token avant de placer un grant.",
-      });
-      await handleApproveToken();
-      return;
-    }
-
     try {
       // Convertir la date en timestamp Unix (secondes depuis l'epoch)
       const deadlineTimestamp = Math.floor(deadline!.getTime() / 1000);
-      const amountInWei = parseEther(amount);
       const issueIdNumber = parseInt(issueId);
 
       const hash = await writeContractAsync({
@@ -295,7 +245,7 @@ export const GrantPage = () => {
         args: [
           issueUrl,
           BigInt(issueIdNumber),
-          amountInWei,
+          amount,
           BigInt(deadlineTimestamp),
         ],
       });
@@ -321,150 +271,91 @@ export const GrantPage = () => {
       <h1 className="text-3xl font-bold">Créer une Récompense</h1>
 
       <Card className="w-full max-w-md">
-        <form onSubmit={handlePlaceGrant}>
-          <CardHeader>
-            <CardTitle>Détails de la Récompense</CardTitle>
-            <CardDescription>
-              Créez une récompense pour une issue GitHub avec le contrat Vgrant
-            </CardDescription>
-          </CardHeader>
+        <CardHeader>
+          <CardTitle>Détails de la Récompense</CardTitle>
+          <CardDescription>
+            Créez une récompense pour une issue GitHub avec le contrat Vgrant
+          </CardDescription>
+        </CardHeader>
 
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label htmlFor="issueUrl" className="text-sm font-medium">
-                URL de l'issue
-              </label>
-              <Input
-                id="issueUrl"
-                placeholder="https://github.com/owner/repo/issues/123"
-                value={issueUrl}
-                onChange={(e) => setIssueUrl(e.target.value)}
-                required
-              />
-            </div>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="issueUrl" className="text-sm font-medium">
+              URL de l'issue
+            </label>
+            <Input
+              id="issueUrl"
+              placeholder="https://github.com/owner/repo/issues/123"
+              value={issueUrl}
+              onChange={(e) => setIssueUrl(e.target.value)}
+              required
+            />
+          </div>
 
-            <div className="space-y-2">
-              <label htmlFor="issueId" className="text-sm font-medium">
-                ID de l'issue
-              </label>
-              <Input
-                id="issueId"
-                type="number"
-                placeholder="123"
-                min="1"
-                value={issueId}
-                onChange={(e) => setIssueId(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                L'ID numérique de l'issue GitHub (ex: 123 pour issue #123)
-              </p>
-            </div>
+          <div className="space-y-2">
+            <label htmlFor="issueId" className="text-sm font-medium">
+              ID de l'issue
+            </label>
+            <Input
+              id="issueId"
+              type="number"
+              placeholder="123"
+              min="1"
+              value={issueId}
+              onChange={(e) => setIssueId(e.target.value)}
+              required
+            />
+            <p className="text-xs text-muted-foreground">
+              L'ID numérique de l'issue GitHub (ex: 123 pour issue #123)
+            </p>
+          </div>
 
-            <div className="space-y-2">
-              <label htmlFor="amount" className="text-sm font-medium">
-                Montant (Tokens)
-              </label>
-              <Input
-                id="amount"
-                type="number"
-                placeholder="100"
-                min="0"
-                step="1"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-              />
-              <p className="text-xs text-muted-foreground">
-                {tokenAddress
-                  ? `Utilisant le token à l'adresse ${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`
-                  : 'Chargement du token...'}
-              </p>
-            </div>
+          <div className="space-y-2">
+            <label htmlFor="amount" className="text-sm font-medium">
+              Montant (Tokens)
+            </label>
+            <Input
+              id="amount"
+              type="number"
+              placeholder="100"
+              min="0"
+              step="1"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+            <p className="text-xs text-muted-foreground">
+              {tokenAddress
+                ? `Utilisant le token à l'adresse ${tokenAddress.slice(0, 6)}...${tokenAddress.slice(-4)}`
+                : 'Chargement du token...'}
+            </p>
+          </div>
 
-            <div className="space-y-2">
-              <label htmlFor="deadline" className="text-sm font-medium">
-                Date limite (minimum 48h à partir de maintenant)
-              </label>
-              <DatePicker
-                date={deadline}
-                setDate={setDeadline}
-                disabledDates={(date) => date < minDeadline}
-                placeholder="Sélectionner une date limite"
-              />
-            </div>
-          </CardContent>
+          <div className="space-y-2">
+            <label htmlFor="deadline" className="text-sm font-medium">
+              Date limite (minimum 48h à partir de maintenant)
+            </label>
+            <DatePicker
+              date={deadline}
+              setDate={setDeadline}
+              disabledDates={(date) => date < minDeadline}
+              placeholder="Sélectionner une date limite"
+            />
+          </div>
+        </CardContent>
 
-          <CardFooter className="flex flex-col space-y-4">
-            {/* Bouton d'approbation ou de placement */}
-            {!isApproved && amount && tokenAddress ? (
-              <Button
-                type="button"
-                className="w-full"
-                onClick={handleApproveToken}
-                disabled={
-                  isPending || isConfirming || isApproving || !isConnected
-                }
-              >
-                {isApproving
-                  ? 'Approbation en cours...'
-                  : isConfirming
-                    ? 'Confirmation en cours...'
-                    : 'Approuver les tokens'}
-              </Button>
-            ) : (
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isPending || isConfirming || !isConnected}
-              >
-                {isPending
-                  ? "En attente d'approbation..."
-                  : isConfirming
-                    ? 'Confirmation en cours...'
-                    : 'Placer le Grant'}
-              </Button>
-            )}
-
-            {/* Statut de la transaction */}
-            {txHash && (
-              <div className="text-sm text-center">
-                {isConfirming && (
-                  <p className="text-yellow-500">
-                    Transaction en cours... <br />
-                    <a
-                      href={`http://localhost:8545/tx/${txHash}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
-                    >
-                      Voir la transaction
-                    </a>
-                  </p>
-                )}
-                {isConfirmed && (
-                  <p className="text-green-500">
-                    Transaction confirmée ! <br />
-                    <a
-                      href={`http://localhost:8545/tx/${txHash}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
-                    >
-                      Voir la transaction
-                    </a>
-                  </p>
-                )}
-                {isError && (
-                  <p className="text-red-500">
-                    Erreur de transaction:{' '}
-                    {error?.message || 'Veuillez réessayer'}
-                  </p>
-                )}
-              </div>
-            )}
-          </CardFooter>
-        </form>
+        <CardFooter className="flex flex-col space-y-4">
+          {
+            <Button
+              type="button"
+              className="w-full"
+              onClick={handle}
+              disabled={isPending || isConfirming || !isConnected}
+            >
+              Create Grant
+            </Button>
+          }
+        </CardFooter>
       </Card>
     </div>
   );
