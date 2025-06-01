@@ -95,7 +95,7 @@ flowchart LR
 ## ✨ Core Innovation
 
 ### 🛡️ PR Theft Protection
-By using the **Web Proof** technology of **vlayer**, we can ensure a **Git Account** is linked to a **Wallet Address** by enforcing a registration of the developer before a valid merge (*Step 2. in above diagram*). We use our **front-end** to simplify the interaction with our smart contract.
+By using the **Web Proof** technology of **vlayer**, we ensure a **Git Account** is linked to a **Wallet Address** by enforcing a registration of the developer before a valid merge (*Step 2. in above diagram*). We use our **front-end** to simplify the interaction with our smart contract.
 
 
 ```mermaid
